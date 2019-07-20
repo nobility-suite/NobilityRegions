@@ -1,13 +1,16 @@
 package io.github.kingvictoria;
 
+import io.github.kingvictoria.commands.DebugCommandListRegions;
+import io.github.kingvictoria.commands.DebugCommandRegionInfo;
+import io.github.kingvictoria.commands.DebugCommandSearchRegions;
 import org.bukkit.World;
 import org.bukkit.block.Biome;
 import org.bukkit.plugin.java.JavaPlugin;
 
 @SuppressWarnings("unused")
 public class NobilityRegions extends JavaPlugin {
-    protected static RegionMaster regionMaster;
-    protected static NobilityRegions instance;
+    public static RegionMaster regionMaster;
+    public static NobilityRegions instance;
 
     @Override
     public void onEnable() {
@@ -15,6 +18,11 @@ public class NobilityRegions extends JavaPlugin {
 
         // Listeners
         getServer().getPluginManager().registerEvents(new RegionChangeListener(), this);
+
+        // Commands
+        this.getCommand("listregions").setExecutor(new DebugCommandListRegions());
+        this.getCommand("searchregions").setExecutor(new DebugCommandSearchRegions());
+        this.getCommand("regioninfo").setExecutor(new DebugCommandRegionInfo());
 
         // Regions Initialization
         regionMaster = new RegionMaster(getConfig(), getServer().getWorlds());

@@ -1,3 +1,13 @@
 name: NobilityRegions
 version: 0.3
 main: io.github.kingvictoria.NobilityRegions
+commands:
+  listregions:
+    description: (DEBUG) Lists all of the Regions
+    usage: /listregions (world)
+  searchregions:
+    description: (DEBUG) Searches all of the Regions for a matching name
+    usage: /searchregions <query>
+  regioninfo:
+    description: (DEBUG) Shows information about a specific region
+    usage: /regioninfo <name>

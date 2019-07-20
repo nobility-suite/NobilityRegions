@@ -81,9 +81,13 @@ public class RegionMaster {
         for(Region region: regions) {
             if(name.equalsIgnoreCase(region.getName())) {
                 return region;
-            }
-        }
+            } // if
+        } // for
 
         return null;
     } // getRegionByName
+
+    public List<Region> getRegions() {
+        return regions;
+    }
 } // class
