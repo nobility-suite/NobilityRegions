@@ -5,6 +5,9 @@ commands:
   getregion:
     description: Displays the region you are in
     usage: /getregion
+  setregionname:
+    description: Set the name of a region (defaults to region you are in
+    usage: /setregionname (name of region to change)
   listregions:
     description: (DEBUG) Lists all of the Regions
     usage: /listregions (world)

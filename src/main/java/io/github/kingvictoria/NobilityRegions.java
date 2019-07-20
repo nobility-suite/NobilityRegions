@@ -1,9 +1,6 @@
 package io.github.kingvictoria;
 
-import io.github.kingvictoria.commands.CommandGetRegion;
-import io.github.kingvictoria.commands.DebugCommandListRegions;
-import io.github.kingvictoria.commands.DebugCommandRegionInfo;
-import io.github.kingvictoria.commands.DebugCommandSearchRegions;
+import io.github.kingvictoria.commands.*;
 import org.bukkit.World;
 import org.bukkit.block.Biome;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -25,6 +22,7 @@ public class NobilityRegions extends JavaPlugin {
         this.getCommand("searchregions").setExecutor(new DebugCommandSearchRegions());
         this.getCommand("regioninfo").setExecutor(new DebugCommandRegionInfo());
         this.getCommand("getregion").setExecutor(new CommandGetRegion());
+        this.getCommand("setregionname").setExecutor(new CommandSetRegionName());
 
         // Regions Initialization
         regionMaster = new RegionMaster(getConfig(), getServer().getWorlds());
