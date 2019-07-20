@@ -21,8 +21,7 @@ public class RegionChangeListener implements Listener {
         World toWorld = event.getTo().getWorld();
 
         if(fromBiome != toBiome || !fromWorld.equals(toWorld)) {
-            player.sendMessage(ChatColor.YELLOW + "You have entered "
-                    + ChatColor.RED + NobilityRegions.regionMaster.getRegionName(toWorld, toBiome));
+            player.sendMessage(ChatColor.YELLOW + "You have entered " + ChatColor.RED + NobilityRegions.regionMaster.getRegionName(toWorld, toBiome));
         } // if
     } // onPlayerMove
 
