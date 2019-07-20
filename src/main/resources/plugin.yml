@@ -2,6 +2,9 @@ name: NobilityRegions
 version: 0.3
 main: io.github.kingvictoria.NobilityRegions
 commands:
+  getregion:
+    description: Displays the region you are in
+    usage: /getregion
   listregions:
     description: (DEBUG) Lists all of the Regions
     usage: /listregions (world)

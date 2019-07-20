@@ -1,5 +1,6 @@
 package io.github.kingvictoria;
 
+import io.github.kingvictoria.commands.CommandGetRegion;
 import io.github.kingvictoria.commands.DebugCommandListRegions;
 import io.github.kingvictoria.commands.DebugCommandRegionInfo;
 import io.github.kingvictoria.commands.DebugCommandSearchRegions;
@@ -23,6 +24,7 @@ public class NobilityRegions extends JavaPlugin {
         this.getCommand("listregions").setExecutor(new DebugCommandListRegions());
         this.getCommand("searchregions").setExecutor(new DebugCommandSearchRegions());
         this.getCommand("regioninfo").setExecutor(new DebugCommandRegionInfo());
+        this.getCommand("getregion").setExecutor(new CommandGetRegion());
 
         // Regions Initialization
         regionMaster = new RegionMaster(getConfig(), getServer().getWorlds());

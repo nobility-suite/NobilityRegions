@@ -24,10 +24,10 @@ public class DebugCommandRegionInfo implements CommandExecutor {
         } // if
 
         commandSender.sendMessage(ChatColor.YELLOW + "==== "+region.getName()+" ====");
-        commandSender.sendMessage(ChatColor.YELLOW + "Biome: " + ChatColor.BLUE + region.getBiome().name().toLowerCase());
+        commandSender.sendMessage(ChatColor.YELLOW + "Biome: " + ChatColor.BLUE + region.getBiome().name());
         commandSender.sendMessage(ChatColor.YELLOW + "World: " + ChatColor.BLUE + region.getWorld().getName());
 
         return true;
     } // onCommand
 
-}
+} // class
