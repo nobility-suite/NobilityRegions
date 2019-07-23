@@ -33,8 +33,14 @@ public class DebugCommandRegionInfo implements CommandExecutor {
         commandSender.sendMessage(ChatColor.YELLOW + "==== "+region.getName()+" ====");
         commandSender.sendMessage(ChatColor.YELLOW + "Biome: " + ChatColor.BLUE + region.getBiome().name());
         commandSender.sendMessage(ChatColor.YELLOW + "World: " + ChatColor.BLUE + region.getWorld().getName());
+
         if(region.isHabitable()) commandSender.sendMessage(ChatColor.YELLOW + "Habitability: " + ChatColor.BLUE + "Habitable");
         else commandSender.sendMessage(ChatColor.YELLOW + "Habitability: " + ChatColor.BLUE + "Wilderness");
+
+        commandSender.sendMessage(ChatColor.YELLOW + "-- Resources --");
+        for(String resource: region.getResources().keySet()) {
+            commandSender.sendMessage(ChatColor.YELLOW + resource + ": " + ChatColor.BLUE + region.getResource(resource));
+        } // for
 
         return true;
     } // onCommand

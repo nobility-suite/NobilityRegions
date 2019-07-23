@@ -87,6 +87,10 @@ public class Region {
         return habitable;
     }
 
+    public double getResource(String resource) {
+        return resources.get(resource).doubleValue();
+    }
+
     public Map<String, Double> getResources() {
         return resources;
     }
