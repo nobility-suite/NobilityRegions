@@ -66,4 +66,15 @@ public class Region {
     public boolean isHabitable() {
         return habitable;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if(o instanceof Region) {
+            Region region = (Region) o;
+
+            if(((Region) o).name.equalsIgnoreCase(name)) return true;
+        } // if
+
+        return false;
+    } // equals
 } // class

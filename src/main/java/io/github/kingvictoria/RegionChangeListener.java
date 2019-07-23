@@ -1,8 +1,6 @@
 package io.github.kingvictoria;
 
 import org.bukkit.ChatColor;
-import org.bukkit.World;
-import org.bukkit.block.Biome;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -15,13 +13,19 @@ public class RegionChangeListener implements Listener {
         if(event.isCancelled()) return;
 
         Player player = event.getPlayer();
-        Biome fromBiome = event.getFrom().getBlock().getBiome();
-        World fromWorld = event.getFrom().getWorld();
-        Biome toBiome = event.getTo().getBlock().getBiome();
-        World toWorld = event.getTo().getWorld();
+        Region from = NobilityRegions.regionMaster.getRegionByLocation(event.getFrom());
+        Region to = NobilityRegions.regionMaster.getRegionByLocation(event.getTo());
 
-        if(fromBiome != toBiome || !fromWorld.equals(toWorld)) {
-            player.sendMessage(ChatColor.YELLOW + "You have entered " + ChatColor.BLUE + "" + ChatColor.BOLD + NobilityRegions.regionMaster.getRegionName(toWorld, toBiome));
+        if(!from.equals(to)) {
+            player.sendMessage(ChatColor.YELLOW + "You have entered " + ChatColor.BLUE + "" + ChatColor.BOLD + to.getName());
+
+            if(from.isHabitable() != to.isHabitable()) {
+                if(to.isHabitable()) {
+                    player.sendMessage(ChatColor.GREEN + "You have left the wilderness");
+                } else {
+                    player.sendMessage(ChatColor.GOLD + "You have entered the wilderness");
+                } // if/else
+            } // if
         } // if
     } // onPlayerMove
 
