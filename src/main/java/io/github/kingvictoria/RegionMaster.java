@@ -13,31 +13,10 @@ public class RegionMaster {
 
     protected RegionMaster(Configuration config, List<World> worlds) {
         regions = new ArrayList<>();
-        List<String> regionNames = new ArrayList<>();
 
         for(World world: worlds) {
             for(Biome biome: Biome.values()) {
-                String key = "regions." + world.getName() + "." + biome.name() + ".";
-                String name;
-
-                if(config.isSet(key + "name")) {
-                    name = config.getString(key + "name");
-
-                    for(String n: regionNames) {
-                        if(n.equalsIgnoreCase(name)) {
-                            NobilityRegions.instance.getLogger().severe("The region name '" + name
-                                    + "' has already been used. Re-naming to '" + world.getName() + "-" + biome.name() + "'");
-                            name = world.getName() + "-" + biome.name();
-                            config.set(key + "name", name);
-                        } // if
-                    } // for
-                } else {
-                    name = world.getName() + "-" + biome.name();
-                    config.set(key + "name", name);
-                } // if/else
-
-                regionNames.add(name);
-                regions.add(new Region(name, world, biome));
+                regions.add(Configs.region(world, biome).load());
             } // for
         } // for
     } // constructor
@@ -87,7 +66,11 @@ public class RegionMaster {
         return null;
     } // getRegionByName
 
+    /**
+     * Retrieves a list of all regions
+     * @return List of Region objects
+     */
     public List<Region> getRegions() {
         return regions;
-    }
+    } // getRegions
 } // class
