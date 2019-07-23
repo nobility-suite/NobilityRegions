@@ -24,6 +24,7 @@ public class NobilityRegions extends JavaPlugin {
         this.getCommand("getregion").setExecutor(new CommandGetRegion());
         this.getCommand("setregionname").setExecutor(new CommandSetRegionName());
         this.getCommand("setregionhabitability").setExecutor(new CommandSetRegionHabitability());
+        this.getCommand("setregionresource").setExecutor(new CommandSetRegionResource());
 
         // Regions Initialization
         regionMaster = new RegionMaster(getConfig(), getServer().getWorlds());

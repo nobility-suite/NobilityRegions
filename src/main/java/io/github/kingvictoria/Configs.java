@@ -101,8 +101,8 @@ public class Configs {
 
             // RESOURCES
             resources = new HashMap<>();
-            if(config.isSet(key + ".resources")) {
-                ConfigurationSection resourceConfig = config.getConfigurationSection(key + ".resources");
+            if(config.isSet(key + ".resource")) {
+                ConfigurationSection resourceConfig = config.getConfigurationSection(key + ".resource");
 
                 for(String resource: resourceConfig.getKeys(false)) {
                     resources.put(resource, resourceConfig.getDouble(resource));
