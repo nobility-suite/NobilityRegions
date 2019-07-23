@@ -1,5 +1,6 @@
 package io.github.kingvictoria;
 
+import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.Biome;
 import org.bukkit.configuration.Configuration;
@@ -65,6 +66,21 @@ public class RegionMaster {
 
         return null;
     } // getRegionByName
+
+    /**
+     * Gets the Region of a Location
+     * @param location Location location
+     * @return null if the location is somehow outside of any region (this means something is broken)
+     */
+    public Region getRegionByLocation(Location location) {
+        for(Region region: regions) {
+            if(region.getBiome().equals(location.getBlock().getBiome()) && region.getWorld().equals(location.getWorld())) {
+                return region;
+            } // if
+        } // for
+
+        return null;
+    } // getRegionByLocation
 
     /**
      * Retrieves a list of all regions
