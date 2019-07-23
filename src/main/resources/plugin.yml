@@ -6,8 +6,11 @@ commands:
     description: Displays the region you are in
     usage: /getregion
   setregionname:
-    description: Set the name of a region (defaults to region you are in
+    description: Set the name of a region (defaults to region you are in)
     usage: /setregionname (name of region to change)
+  setregionhabitability:
+    description: Set the habitability of a region (defaults to region you are in)
+    usage: /setregionhabitability (name of region to change) <true|false>
   listregions:
     description: (DEBUG) Lists all of the Regions
     usage: /listregions (world)
