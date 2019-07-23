@@ -6,7 +6,9 @@ import org.bukkit.block.Biome;
 import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.ConfigurationSection;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class Configs {
@@ -72,6 +74,7 @@ public class Configs {
             Biome biome = Biome.valueOf(biomeName);
             String name;
             boolean habitable;
+            Map<String, Double> resources;
 
             // NAME
             if(config.isSet(key + ".name")) {
@@ -96,8 +99,18 @@ public class Configs {
                 setHabitable(true);
             } // if/else
 
+            // RESOURCES
+            resources = new HashMap<>();
+            if(config.isSet(key + ".resources")) {
+                ConfigurationSection resourceConfig = config.getConfigurationSection(key + ".resources");
+
+                for(String resource: resourceConfig.getKeys(false)) {
+                    resources.put(resource, resourceConfig.getDouble(resource));
+                } // for
+            } // if
+
             save();
-            return new Region(name, world, biome, habitable);
+            return new Region(name, world, biome, habitable, resources);
         } // load
 
         public ConfigRegion setName(String name) {
@@ -109,6 +122,16 @@ public class Configs {
             changes.put("habitable", habitable);
             return this;
         } // setHabitable
+
+        public ConfigRegion putResource(String resource, double value) {
+            changes.put("resource." + resource, value);
+            return this;
+        } // putResource
+
+        public ConfigRegion deleteResource(String resource) {
+            changes.put("resource." + resource, null);
+            return this;
+        } // deleteResource
 
     } // ConfigRegion
 

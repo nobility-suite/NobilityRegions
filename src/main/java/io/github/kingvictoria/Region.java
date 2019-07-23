@@ -21,11 +21,12 @@ public class Region {
      * @param world The World of this Region
      * @param biome The Biome of this Region
      */
-    protected Region(String name, World world, Biome biome, boolean habitable) {
+    protected Region(String name, World world, Biome biome, boolean habitable, Map<String, Double> resources) {
         this.name = name;
         this.world = world;
         this.biome = biome;
         this.habitable = habitable;
+        this.resources = resources;
     } // constructor
 
     /**
@@ -43,13 +44,32 @@ public class Region {
     } // setName
 
     /**
-     * Sets whether this region is habitable or wilderness
+     * Sets whether this region is habitable or wilderness and updates the config to match
      * @param value true if habitable
      */
     public void setHabitable(boolean value) {
         habitable = value;
         Configs.region(this).setHabitable(value).save();
     } // setHabitable
+
+    /**
+     * Sets a resource with a value (overwrites existing resources with the same name) and updates the config to match
+     * @param resource String name of resource
+     * @param value double value
+     */
+    public void setResource(String resource, double value) {
+        resources.put(resource, value);
+        Configs.region(this).putResource(resource, value).save();
+    } // setResource
+
+    /**
+     * Removes a resource from this region and updates the config to match
+     * @param resource String name of resource
+     */
+    public void removeResource(String resource) {
+        resources.remove(resource);
+        Configs.region(this).deleteResource(resource).save();
+    } // removeResource
 
     public String getName() {
         return name;
@@ -65,6 +85,10 @@ public class Region {
 
     public boolean isHabitable() {
         return habitable;
+    }
+
+    public Map<String, Double> getResources() {
+        return resources;
     }
 
     @Override
