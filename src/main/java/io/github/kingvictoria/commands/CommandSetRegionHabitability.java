@@ -67,6 +67,9 @@ public class CommandSetRegionHabitability implements CommandExecutor {
 
         region.setHabitable(habitability);
 
+
+        commandSender.sendMessage(ChatColor.BLUE + "" + ChatColor.BOLD + region.getName() + ChatColor.YELLOW + "'s habitability is set to " + habitability);
+
         return true;
     } // onCommand
 
