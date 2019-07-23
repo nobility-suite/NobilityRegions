@@ -6,6 +6,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 
 public class DebugCommandRegionInfo implements CommandExecutor {
 
@@ -16,7 +17,13 @@ public class DebugCommandRegionInfo implements CommandExecutor {
             return true;
         } // if
 
-        Region region = NobilityRegions.regionMaster.getRegionByName(String.join(" ", args));
+        Region region;
+
+        if(args.length == 0 && commandSender instanceof Player) {
+            region = NobilityRegions.regionMaster.getRegionByLocation(((Player) commandSender).getLocation());
+        } else {
+            region = NobilityRegions.regionMaster.getRegionByName(String.join(" ", args));
+        }
 
         if(region == null) {
             commandSender.sendMessage(ChatColor.RED + "Invalid Region");
