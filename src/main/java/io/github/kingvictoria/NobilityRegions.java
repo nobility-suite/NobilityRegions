@@ -1,14 +1,12 @@
 package io.github.kingvictoria;
 
 import io.github.kingvictoria.commands.*;
-import org.bukkit.World;
-import org.bukkit.block.Biome;
 import org.bukkit.plugin.java.JavaPlugin;
 
 @SuppressWarnings("unused")
 public class NobilityRegions extends JavaPlugin {
-    public static RegionMaster regionMaster;
-    public static NobilityRegions instance;
+    private static RegionMaster regionMaster;
+    private static NobilityRegions instance;
 
     @Override
     public void onEnable() {
@@ -37,12 +35,18 @@ public class NobilityRegions extends JavaPlugin {
     } // onDisable
 
     /**
-     * Retrieves the Region for a given World-Biome combination
-     * @param world World of a given Region
-     * @param biome Biome of a given Region
-     * @return null if combination is correlated with no region (likely something is wrong)
+     * Access the RegionMaster to retrieve a Region object
+     * @return
      */
-    public static Region getRegion(World world, Biome biome) {
-        return regionMaster.getRegion(world, biome);
-    } // getRegion
+    public static RegionMaster getRegionMaster() {
+        return regionMaster;
+    } // getRegionMaster
+
+    /**
+     * Access the NobilityRegions Instance
+     * @return
+     */
+    public static NobilityRegions getInstance() {
+        return instance;
+    } // getInstance
 } // class

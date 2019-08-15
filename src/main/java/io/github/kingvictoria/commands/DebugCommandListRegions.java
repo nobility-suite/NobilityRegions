@@ -18,7 +18,7 @@ public class DebugCommandListRegions implements CommandExecutor {
 
         commandSender.sendMessage(ChatColor.YELLOW + "==== Regions ====");
 
-        for(Region region: NobilityRegions.regionMaster.getRegions()) {
+        for(Region region: NobilityRegions.getRegionMaster().getRegions()) {
             if(args.length > 0 && !args[0].equalsIgnoreCase(region.getWorld().getName())) continue;
 
             commandSender.sendMessage(ChatColor.BLUE + region.getName());

@@ -50,14 +50,14 @@ public class CommandSetRegionHabitability implements CommandExecutor {
 
         if(args.length == 0) {
             Player player = (Player) commandSender;
-            region = NobilityRegions.regionMaster.getRegion(player.getWorld(), player.getLocation().getBlock().getBiome());
+            region = NobilityRegions.getRegionMaster().getRegion(player.getWorld(), player.getLocation().getBlock().getBiome());
 
             if(region == null) {
                 commandSender.sendMessage(ChatColor.DARK_RED + "" + ChatColor.BOLD + "ERROR: " + ChatColor.RED + "This area is not a region");
                 return true;
             } // if
         } else {
-            region = NobilityRegions.regionMaster.getRegionByName(String.join(" ", args));
+            region = NobilityRegions.getRegionMaster().getRegionByName(String.join(" ", args));
 
             if(region == null) {
                 commandSender.sendMessage(ChatColor.RED + "Invalid Region");

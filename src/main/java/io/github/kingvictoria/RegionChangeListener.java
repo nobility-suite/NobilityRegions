@@ -13,8 +13,8 @@ public class RegionChangeListener implements Listener {
         if(event.isCancelled()) return;
 
         Player player = event.getPlayer();
-        Region from = NobilityRegions.regionMaster.getRegionByLocation(event.getFrom());
-        Region to = NobilityRegions.regionMaster.getRegionByLocation(event.getTo());
+        Region from = NobilityRegions.getRegionMaster().getRegionByLocation(event.getFrom());
+        Region to = NobilityRegions.getRegionMaster().getRegionByLocation(event.getTo());
 
         if(!from.equals(to)) {
             player.sendMessage(ChatColor.YELLOW + "You have entered " + ChatColor.BLUE + "" + ChatColor.BOLD + to.getName());

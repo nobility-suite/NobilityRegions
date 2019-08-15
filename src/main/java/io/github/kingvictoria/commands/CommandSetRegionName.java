@@ -32,14 +32,14 @@ public class CommandSetRegionName implements CommandExecutor {
 
         if(args.length == 0) {
             Player player = (Player) commandSender;
-            region = NobilityRegions.regionMaster.getRegion(player.getWorld(), player.getLocation().getBlock().getBiome());
+            region = NobilityRegions.getRegionMaster().getRegion(player.getWorld(), player.getLocation().getBlock().getBiome());
 
             if(region == null) {
                 commandSender.sendMessage(ChatColor.DARK_RED + "" + ChatColor.BOLD + "ERROR: " + ChatColor.RED + "This area is not a region");
                 return true;
             } // if
         } else {
-            region = NobilityRegions.regionMaster.getRegionByName(String.join(" ", args));
+            region = NobilityRegions.getRegionMaster().getRegionByName(String.join(" ", args));
 
             if(region == null) {
                 commandSender.sendMessage(ChatColor.RED + "Invalid Region");
@@ -47,7 +47,7 @@ public class CommandSetRegionName implements CommandExecutor {
             } // if
         } // if/else
 
-        ConversationFactory factory = new ConversationFactory(NobilityRegions.instance);
+        ConversationFactory factory = new ConversationFactory(NobilityRegions.getInstance());
 
         Conversation conv = factory
             .withFirstPrompt(new StringPrompt() {
@@ -67,7 +67,7 @@ public class CommandSetRegionName implements CommandExecutor {
                     return null;
                 }
             })
-            .withPrefix(arg0 -> ChatColor.BLUE + "" + ChatColor.BOLD + "[" + NobilityRegions.instance.getName() + "]" + ChatColor.YELLOW + " ")
+            .withPrefix(arg0 -> ChatColor.BLUE + "" + ChatColor.BOLD + "[" + NobilityRegions.getInstance().getName() + "]" + ChatColor.YELLOW + " ")
             .withLocalEcho(false)
             .buildConversation((Conversable) commandSender);
         conv.begin();

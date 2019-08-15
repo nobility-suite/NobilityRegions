@@ -18,7 +18,7 @@ public class CommandGetRegion implements CommandExecutor {
         } // if
 
         Player player = (Player) commandSender;
-        Region region = NobilityRegions.regionMaster.getRegion(player.getWorld(), player.getLocation().getBlock().getBiome());
+        Region region = NobilityRegions.getRegionMaster().getRegion(player.getWorld(), player.getLocation().getBlock().getBiome());
 
         if(region == null) {
             commandSender.sendMessage(ChatColor.DARK_RED + "" + ChatColor.BOLD + "ERROR: " + ChatColor.RED + "This area is not a region");

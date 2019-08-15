@@ -20,9 +20,9 @@ public class DebugCommandRegionInfo implements CommandExecutor {
         Region region;
 
         if(args.length == 0 && commandSender instanceof Player) {
-            region = NobilityRegions.regionMaster.getRegionByLocation(((Player) commandSender).getLocation());
+            region = NobilityRegions.getRegionMaster().getRegionByLocation(((Player) commandSender).getLocation());
         } else {
-            region = NobilityRegions.regionMaster.getRegionByName(String.join(" ", args));
+            region = NobilityRegions.getRegionMaster().getRegionByName(String.join(" ", args));
         }
 
         if(region == null) {
