@@ -24,7 +24,7 @@ public class Configs {
             this.worldName = worldName;
             this.key = "regions" + "." + worldName + "." + biomeName;
             changes = new HashMap<>();
-            config = NobilityRegions.instance.getConfig();
+            config = NobilityRegions.getInstance().getConfig();
         } // Constructor
 
         /**
@@ -60,7 +60,7 @@ public class Configs {
                 config.set(key + "." + label, changes.get(label));
             } // for
 
-            NobilityRegions.instance.saveConfig();
+            NobilityRegions.getInstance().saveConfig();
         } // save
 
         /**
@@ -72,14 +72,14 @@ public class Configs {
             Biome biome = Biome.valueOf(biomeName);
             String name;
             boolean habitable;
-            Map<String, Double> resources;
+            Map<String, Integer> resources;
 
             // NAME
             if(config.isSet(key + ".name")) {
                 name = config.getString(key + ".name");
 
                 if(!isUniqueName(name)) {
-                    NobilityRegions.instance.getLogger().severe("The region name '" + name
+                    NobilityRegions.getInstance().getLogger().severe("The region name '" + name
                             + "' has already been used. Re-naming to '" + worldName + "-" + biomeName + "'");
                     name = worldName + "-" + biomeName;
                     setName(name);
@@ -103,7 +103,7 @@ public class Configs {
                 ConfigurationSection resourceConfig = config.getConfigurationSection(key + ".resource");
 
                 for(String resource: resourceConfig.getKeys(false)) {
-                    resources.put(resource, resourceConfig.getDouble(resource));
+                    resources.put(resource, resourceConfig.getInt(resource));
                 } // for
             } // if
 

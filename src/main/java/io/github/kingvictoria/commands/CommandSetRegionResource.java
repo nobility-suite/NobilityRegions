@@ -62,7 +62,7 @@ public class CommandSetRegionResource implements CommandExecutor {
                         return new NumericPrompt() {
                             @Override
                             protected Prompt acceptValidatedInput(ConversationContext conversationContext, Number number) {
-                                region.setResource(s, number.doubleValue());
+                                region.setResource(s, number.intValue());
                                 conversationContext.getForWhom().sendRawMessage(ChatColor.BLUE
                                         + s + ChatColor.YELLOW + " resource set to " + ChatColor.BLUE + number.doubleValue());
 

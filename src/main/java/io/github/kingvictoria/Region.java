@@ -13,7 +13,7 @@ public class Region {
     private World world;
     private Biome biome;
     private boolean habitable;
-    private Map<String, Double> resources;
+    private Map<String, Integer> resources;
 
     /**
      * Creates a Region from a String name, World, and Biome
@@ -21,7 +21,7 @@ public class Region {
      * @param world The World of this Region
      * @param biome The Biome of this Region
      */
-    protected Region(String name, World world, Biome biome, boolean habitable, Map<String, Double> resources) {
+    protected Region(String name, World world, Biome biome, boolean habitable, Map<String, Integer> resources) {
         this.name = name;
         this.world = world;
         this.biome = biome;
@@ -55,9 +55,9 @@ public class Region {
     /**
      * Sets a resource with a value (overwrites existing resources with the same name) and updates the config to match
      * @param resource String name of resource
-     * @param value double value
+     * @param value int value
      */
-    public void setResource(String resource, double value) {
+    public void setResource(String resource, int value) {
         resources.put(resource, value);
         Configs.region(this).putResource(resource, value).save();
     } // setResource
@@ -91,15 +91,13 @@ public class Region {
         return resources.get(resource).doubleValue();
     }
 
-    public Map<String, Double> getResources() {
+    public Map<String, Integer> getResources() {
         return resources;
     }
 
     @Override
     public boolean equals(Object o) {
         if(o instanceof Region) {
-            Region region = (Region) o;
-
             if(((Region) o).name.equalsIgnoreCase(name)) return true;
         } // if
 
