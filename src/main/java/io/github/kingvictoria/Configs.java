@@ -121,7 +121,7 @@ public class Configs {
             return this;
         } // setHabitable
 
-        public ConfigRegion putResource(String resource, double value) {
+        public ConfigRegion putResource(String resource, int value) {
             changes.put("resource." + resource, value);
             return this;
         } // putResource

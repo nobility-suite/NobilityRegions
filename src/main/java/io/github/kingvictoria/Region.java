@@ -88,7 +88,7 @@ public class Region {
     }
 
     public double getResource(String resource) {
-        return resources.get(resource).doubleValue();
+        return resources.get(resource).intValue();
     }
 
     public Map<String, Integer> getResources() {

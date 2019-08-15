@@ -71,7 +71,7 @@ public class CommandSetRegionResource implements CommandExecutor {
 
                             @Override
                             public String getPromptText(ConversationContext conversationContext) {
-                                return "Enter value of resource as a double:";
+                                return "Enter value of resource as a integer:";
                             }
                         };
                     }
