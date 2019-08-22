@@ -1,6 +1,8 @@
 package io.github.kingvictoria;
 
-import org.bukkit.ChatColor;
+import net.md_5.bungee.api.ChatColor;
+import net.md_5.bungee.api.ChatMessageType;
+import net.md_5.bungee.api.chat.ComponentBuilder;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -17,13 +19,13 @@ public class RegionChangeListener implements Listener {
         Region to = NobilityRegions.getRegionMaster().getRegionByLocation(event.getTo());
 
         if(!from.equals(to)) {
-            player.sendMessage(ChatColor.YELLOW + "You have entered " + ChatColor.BLUE + "" + ChatColor.BOLD + to.getName());
+            player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new ComponentBuilder("You have entered ").color(ChatColor.YELLOW).append(to.getName()).color(ChatColor.GREEN).bold(true).create());
 
             if(from.isHabitable() != to.isHabitable()) {
                 if(to.isHabitable()) {
-                    player.sendMessage(ChatColor.GREEN + "You have left the wilderness");
+                    player.sendTitle("",ChatColor.GREEN + "You have left the wilderness", 10, 70, 20);
                 } else {
-                    player.sendMessage(ChatColor.GOLD + "You have entered the wilderness");
+                    player.sendTitle("",ChatColor.GOLD + "You have entered the wilderness", 10, 70, 20);
                 } // if/else
             } // if
         } // if
