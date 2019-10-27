@@ -1,12 +1,14 @@
 package io.github.kingvictoria.commands;
 
-import io.github.kingvictoria.NobilityRegions;
-import io.github.kingvictoria.Region;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+
+import io.github.kingvictoria.NobilityRegions;
+import io.github.kingvictoria.Region;
+import io.github.kingvictoria.RegionResource;
 
 public class DebugCommandRegionInfo implements CommandExecutor {
 
@@ -38,8 +40,8 @@ public class DebugCommandRegionInfo implements CommandExecutor {
         else commandSender.sendMessage(ChatColor.YELLOW + "Habitability: " + ChatColor.BLUE + "Wilderness");
 
         commandSender.sendMessage(ChatColor.YELLOW + "-- Resources --");
-        for(String resource: region.getResources().keySet()) {
-            commandSender.sendMessage(ChatColor.YELLOW + resource + ": " + ChatColor.BLUE + region.getResource(resource));
+        for(RegionResource resource: region.getResources().keySet()) {
+            commandSender.sendMessage(ChatColor.YELLOW + resource.toString() + ": " + ChatColor.BLUE + region.getResource(resource));
         } // for
 
         return true;

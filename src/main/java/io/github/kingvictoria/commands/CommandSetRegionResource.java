@@ -2,6 +2,8 @@ package io.github.kingvictoria.commands;
 
 import io.github.kingvictoria.NobilityRegions;
 import io.github.kingvictoria.Region;
+import io.github.kingvictoria.RegionResource;
+
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -10,10 +12,11 @@ import org.bukkit.conversations.*;
 import org.bukkit.entity.Player;
 
 public class CommandSetRegionResource implements CommandExecutor {
-
+	
     @Override
     public boolean onCommand(CommandSender commandSender, Command command, String label, String[] args) {
-        if(!commandSender.isOp()) {
+        
+    	if(!commandSender.isOp()) {
             commandSender.sendMessage(ChatColor.RED + "Usage of this command is restricted");
             return true;
         } // if
@@ -46,7 +49,10 @@ public class CommandSetRegionResource implements CommandExecutor {
                 return true;
             } // if
         } // if/else
-
+        
+        
+        
+        
         ConversationFactory factory = new ConversationFactory(NobilityRegions.getInstance());
 
         Conversation conv = factory
@@ -62,7 +68,7 @@ public class CommandSetRegionResource implements CommandExecutor {
                         return new NumericPrompt() {
                             @Override
                             protected Prompt acceptValidatedInput(ConversationContext conversationContext, Number number) {
-                                region.setResource(s, number.intValue());
+                                region.setResource(RegionResource.getResource(s), number.intValue());
                                 conversationContext.getForWhom().sendRawMessage(ChatColor.BLUE
                                         + s + ChatColor.YELLOW + " resource set to " + ChatColor.BLUE + number.doubleValue());
 
@@ -80,7 +86,7 @@ public class CommandSetRegionResource implements CommandExecutor {
                 .withLocalEcho(false)
                 .buildConversation((Conversable) commandSender);
         conv.begin();
-
+		
         return true;
     } // onCommand
 

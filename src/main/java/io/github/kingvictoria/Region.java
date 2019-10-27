@@ -13,7 +13,7 @@ public class Region {
     private World world;
     private Biome biome;
     private boolean habitable;
-    private Map<String, Integer> resources;
+    private Map<RegionResource, Integer> resources;
 
     /**
      * Creates a Region from a String name, World, and Biome
@@ -21,7 +21,7 @@ public class Region {
      * @param world The World of this Region
      * @param biome The Biome of this Region
      */
-    protected Region(String name, World world, Biome biome, boolean habitable, Map<String, Integer> resources) {
+    protected Region(String name, World world, Biome biome, boolean habitable, Map<RegionResource, Integer> resources) {
         this.name = name;
         this.world = world;
         this.biome = biome;
@@ -57,7 +57,7 @@ public class Region {
      * @param resource String name of resource
      * @param value int value
      */
-    public void setResource(String resource, int value) {
+    public void setResource(RegionResource resource, int value) {
         resources.put(resource, value);
         Configs.region(this).putResource(resource, value).save();
     } // setResource
@@ -66,7 +66,7 @@ public class Region {
      * Removes a resource from this region and updates the config to match
      * @param resource String name of resource
      */
-    public void removeResource(String resource) {
+    public void removeResource(RegionResource resource) {
         resources.remove(resource);
         Configs.region(this).deleteResource(resource).save();
     } // removeResource
@@ -87,11 +87,11 @@ public class Region {
         return habitable;
     }
 
-    public double getResource(String resource) {
+    public double getResource(RegionResource resource) {
         return resources.get(resource).intValue();
     }
 
-    public Map<String, Integer> getResources() {
+    public Map<RegionResource, Integer> getResources() {
         return resources;
     }
 

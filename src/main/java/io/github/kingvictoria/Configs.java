@@ -72,7 +72,7 @@ public class Configs {
             Biome biome = Biome.valueOf(biomeName);
             String name;
             boolean habitable;
-            Map<String, Integer> resources;
+            Map<RegionResource, Integer> resources;
 
             // NAME
             if(config.isSet(key + ".name")) {
@@ -102,8 +102,9 @@ public class Configs {
             if(config.isSet(key + ".resource")) {
                 ConfigurationSection resourceConfig = config.getConfigurationSection(key + ".resource");
 
-                for(String resource: resourceConfig.getKeys(false)) {
-                    resources.put(resource, resourceConfig.getInt(resource));
+                for(String resourceString: resourceConfig.getKeys(false)) {
+                    RegionResource resource = RegionResource.getResource(resourceString);
+                    resources.put(resource, resourceConfig.getInt(resourceString));
                 } // for
             } // if
 
@@ -121,13 +122,13 @@ public class Configs {
             return this;
         } // setHabitable
 
-        public ConfigRegion putResource(String resource, int value) {
-            changes.put("resource." + resource, value);
+        public ConfigRegion putResource(RegionResource resource, int value) {
+            changes.put("resource." + resource.toString(), value);
             return this;
         } // putResource
 
-        public ConfigRegion deleteResource(String resource) {
-            changes.put("resource." + resource, null);
+        public ConfigRegion deleteResource(RegionResource resource) {
+            changes.put("resource." + resource.toString(), null);
             return this;
         } // deleteResource
 
