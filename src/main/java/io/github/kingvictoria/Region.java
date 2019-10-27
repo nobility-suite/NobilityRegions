@@ -90,6 +90,11 @@ public class Region {
     public double getResource(RegionResource resource) {
         return resources.get(resource).intValue();
     }
+    
+    public double getResource(String resourceString) {
+    	RegionResource resource = RegionResource.getResource(resourceString);
+    	return resources.get(resource).intValue();
+    }
 
     public Map<RegionResource, Integer> getResources() {
         return resources;
