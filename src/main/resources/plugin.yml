@@ -1,22 +1,22 @@
 name: NobilityRegions
 version: 0.5
-main: io.github.kingvictoria.NobilityRegions
+main: net.civex4.nobilityregions.NobilityRegions
 commands:
   getregion:
-    description: Displays the region you are in
+    description: Displays the net.civex4.nobilityregions.region you are in
     usage: /getregion
     aliases: [nrgr]
   setregionname:
-    description: Set the name of a region (defaults to region you are in)
-    usage: /setregionname (name of region to change)
+    description: Set the name of a net.civex4.nobilityregions.region (defaults to net.civex4.nobilityregions.region you are in)
+    usage: /setregionname (name of net.civex4.nobilityregions.region to change)
     aliases: [nrsn]
   setregionhabitability:
-    description: Set the habitability of a region (defaults to region you are in)
-    usage: /setregionhabitability (name of region to change) <true|false>
+    description: Set the habitability of a net.civex4.nobilityregions.region (defaults to net.civex4.nobilityregions.region you are in)
+    usage: /setregionhabitability (name of net.civex4.nobilityregions.region to change) <true|false>
     aliases: [nrsh]
   setregionresource:
-    description: Set a resource of a region (defaults to the region you are in)
-    usage: /setregionresource (name of region to add a resource to)
+    description: Set a resource of a net.civex4.nobilityregions.region (defaults to the net.civex4.nobilityregions.region you are in)
+    usage: /setregionresource (name of net.civex4.nobilityregions.region to add a resource to)
     aliases: [nrsr]
   listregions:
     description: (DEBUG) Lists all of the Regions
@@ -27,6 +27,6 @@ commands:
     usage: /searchregions <query>
     aliases: [nrs]
   regioninfo:
-    description: (DEBUG) Shows information about a specific region
-    usage: /regioninfo (name of region)
+    description: (DEBUG) Shows information about a specific net.civex4.nobilityregions.region
+    usage: /regioninfo (name of net.civex4.nobilityregions.region)
     aliases: [nri]
