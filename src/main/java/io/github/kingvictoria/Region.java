@@ -1,5 +1,6 @@
 package io.github.kingvictoria;
 
+import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.block.Biome;
 
@@ -88,12 +89,16 @@ public class Region {
     }
 
     public double getResource(RegionResource resource) {
+        if (!resources.containsKey(resource)) {
+            Bukkit.getLogger().warning("A resource (" + resource.toString() + ")has been requested in a region (" + this.name + ") where it does not exist");
+        	return 0;
+        }
         return resources.get(resource).intValue();
     }
     
     public double getResource(String resourceString) {
     	RegionResource resource = RegionResource.getResource(resourceString);
-    	return resources.get(resource).intValue();
+    	return getResource(resource);
     }
 
     public Map<RegionResource, Integer> getResources() {
