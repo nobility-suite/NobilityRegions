@@ -3,6 +3,11 @@ package io.github.kingvictoria.nodes;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import org.bukkit.Bukkit;
+import org.bukkit.Material;
+import org.bukkit.block.Biome;
+import org.bukkit.inventory.ItemStack;
+
 import io.github.kingvictoria.NobilityRegions;
 import io.github.kingvictoria.Region;
 
@@ -18,6 +23,34 @@ public class NodeManager {
 		for(Region r : NobilityRegions.getRegionMaster().getRegions()) {
 			nodeMap.put(r,temp);
 		}
+		
+		//Sample nodes for testing
+		
+		Node mine = new Node("Lorafaul Mines",3);
+		ArrayList<ItemStack> mats = new ArrayList<ItemStack>();
+		mats.add(new ItemStack(Material.IRON_ORE, 25));
+		mats.add(new ItemStack(Material.STONE, 60));
+		mine.output = mats;
+		
+		mats.clear();
+		Node forest = new Node("The Weeping Willows",2);
+		mats.add(new ItemStack(Material.DARK_OAK_LOG,30));
+		mats.add(new ItemStack(Material.DARK_OAK_PLANKS,50));
+		forest.output = mats;
+		
+		mats.clear();
+		Node farm = new Node("Verdant Valley",5);
+		mats.add(new ItemStack(Material.CARROT, 50));
+		mats.add(new ItemStack(Material.HAY_BLOCK,10));
+		farm.output = mats;
+		
+		ArrayList<Node> nodes = new ArrayList<Node>();
+		nodes.add(farm);
+		nodes.add(forest);
+		nodes.add(mine);
+		Region test = NobilityRegions.getRegionMaster().getRegion(Bukkit.getWorld("world"), Biome.MOUNTAINS);
+		nodeMap.put(test, nodes);
+		
 	}
 	
 	public ArrayList<Node> getNodes(Region r){
