@@ -31,3 +31,6 @@ commands:
     description: (DEBUG) Shows information about a specific region
     usage: /regioninfo (name of region)
     aliases: [nri]
+  addnode:
+    description: (DEBUG) Adds node to player's region.
+    usage: /addnode <name> <#slots>

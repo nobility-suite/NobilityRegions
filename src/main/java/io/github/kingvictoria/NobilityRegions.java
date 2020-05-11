@@ -1,12 +1,15 @@
 package io.github.kingvictoria;
 
 import io.github.kingvictoria.commands.*;
+import io.github.kingvictoria.nodes.NodeManager;
+
 import org.bukkit.plugin.java.JavaPlugin;
 
 @SuppressWarnings("unused")
 public class NobilityRegions extends JavaPlugin {
     private static RegionMaster regionMaster;
     private static NobilityRegions instance;
+    private static NodeManager nodeManager;
 
     @Override
     public void onEnable() {
@@ -23,9 +26,11 @@ public class NobilityRegions extends JavaPlugin {
         this.getCommand("setregionname").setExecutor(new CommandSetRegionName());
         this.getCommand("setregionhabitability").setExecutor(new CommandSetRegionHabitability());
         this.getCommand("setregionresource").setExecutor(new CommandSetRegionResource());
+        this.getCommand("addnode").setExecutor(new CommandAddNode());
 
         // Regions Initialization
         regionMaster = new RegionMaster(getConfig(), getServer().getWorlds());
+        nodeManager = new NodeManager();
         saveConfig();
     } // onEnable
 
@@ -42,6 +47,14 @@ public class NobilityRegions extends JavaPlugin {
         return regionMaster;
     } // getRegionMaster
 
+    /**
+     * Access the NodeManager to retrieve a Node object
+     * @return
+     */
+    public static NodeManager getNodeManager() {
+        return nodeManager;
+    } // getNodeManager
+    
     /**
      * Access the NobilityRegions Instance
      * @return
