@@ -9,8 +9,8 @@ import io.github.kingvictoria.Region;
 
 public class Node {
 	public String name;
-	int slots;
-	ArrayList<ItemStack> output;
+	public int slots;
+	public ArrayList<ItemStack> output;
 	
 	public Node(String name, int slots) {
 		this.name = name;
