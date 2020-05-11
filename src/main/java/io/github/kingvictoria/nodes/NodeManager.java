@@ -30,19 +30,19 @@ public class NodeManager {
 		ArrayList<ItemStack> mats = new ArrayList<ItemStack>();
 		mats.add(new ItemStack(Material.IRON_ORE, 25));
 		mats.add(new ItemStack(Material.STONE, 60));
-		mine.output = mats;
+		mine.output = (ArrayList<ItemStack>) mats.clone();
 		
 		mats.clear();
 		Node forest = new Node("The Weeping Willows",2);
 		mats.add(new ItemStack(Material.DARK_OAK_LOG,30));
 		mats.add(new ItemStack(Material.DARK_OAK_PLANKS,50));
-		forest.output = mats;
+		forest.output = (ArrayList<ItemStack>) mats.clone();
 		
 		mats.clear();
 		Node farm = new Node("Verdant Valley",5);
 		mats.add(new ItemStack(Material.CARROT, 50));
 		mats.add(new ItemStack(Material.HAY_BLOCK,10));
-		farm.output = mats;
+		farm.output = (ArrayList<ItemStack>) mats.clone();
 		
 		ArrayList<Node> nodes = new ArrayList<Node>();
 		nodes.add(farm);
