@@ -27,6 +27,7 @@ public class NodeManager {
 		//Sample nodes for testing
 		
 		Node mine = new Node("Lorafaul Mines",3);
+		mine.type = NodeType.MINE;
 		ArrayList<ItemStack> mats = new ArrayList<ItemStack>();
 		mats.add(new ItemStack(Material.IRON_ORE, 25));
 		mats.add(new ItemStack(Material.STONE, 60));
@@ -34,12 +35,14 @@ public class NodeManager {
 		
 		mats.clear();
 		Node forest = new Node("The Weeping Willows",2);
+		forest.type = NodeType.FOREST;
 		mats.add(new ItemStack(Material.DARK_OAK_LOG,30));
 		mats.add(new ItemStack(Material.DARK_OAK_PLANKS,50));
 		forest.output = (ArrayList<ItemStack>) mats.clone();
 		
 		mats.clear();
 		Node farm = new Node("Verdant Valley",5);
+		farm.type = NodeType.FARM;
 		mats.add(new ItemStack(Material.CARROT, 50));
 		mats.add(new ItemStack(Material.HAY_BLOCK,10));
 		farm.output = (ArrayList<ItemStack>) mats.clone();

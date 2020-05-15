@@ -11,6 +11,7 @@ public class Node {
 	public String name;
 	public int slots;
 	public ArrayList<ItemStack> output;
+	public NodeType type;
 	
 	public Node(String name, int slots) {
 		this.name = name;
