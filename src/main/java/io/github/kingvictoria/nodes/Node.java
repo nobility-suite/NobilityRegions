@@ -31,6 +31,11 @@ public class Node {
 	}
 
 	public int getUsedSlots() {
-		return this.workers.size();
+		if(this.workers == null) {
+			this.workers = new ArrayList<UUID>();
+			return 0;
+		}else {
+			return this.workers.size();
+		}
 	}
 }
