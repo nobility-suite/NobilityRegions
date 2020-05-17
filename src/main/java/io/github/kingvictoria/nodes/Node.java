@@ -12,7 +12,7 @@ public class Node {
 	public int slots;
 	public ArrayList<ItemStack> output;
 	public NodeType type;
-	ArrayList<UUID> workers;
+	public ArrayList<UUID> workers;
 	
 	public Node(String name, int slots) {
 		this.name = name;
@@ -30,4 +30,7 @@ public class Node {
 		}else return false;
 	}
 
+	public int getUsedSlots() {
+		return this.workers.size();
+	}
 }
