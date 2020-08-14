@@ -11,15 +11,16 @@ public class DebugCommandListRegions implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender commandSender, Command command, String label, String[] args) {
-        if(!commandSender.isOp()) {
+        if (!commandSender.isOp()) {
             commandSender.sendMessage(ChatColor.RED + "Usage of this command is restricted");
             return true;
         } // if
 
         commandSender.sendMessage(ChatColor.YELLOW + "==== Regions ====");
 
-        for(Region region: NobilityRegions.getRegionManager().getRegions()) {
-            if(args.length > 0 && !args[0].equalsIgnoreCase(region.getWorld().getName())) continue;
+        for (Region region : NobilityRegions.getRegionManager().getRegions()) {
+            if (args.length > 0 && !args[0].equalsIgnoreCase(region.getWorld().getName()))
+                continue;
 
             commandSender.sendMessage(ChatColor.BLUE + region.getName());
         } // for

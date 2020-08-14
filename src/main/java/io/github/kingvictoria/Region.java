@@ -18,7 +18,8 @@ public class Region {
 
     /**
      * Creates a Region from a String name, World, and Biome
-     * @param name The String name of this Region
+     * 
+     * @param name  The String name of this Region
      * @param world The World of this Region
      * @param biome The Biome of this Region
      */
@@ -32,11 +33,13 @@ public class Region {
 
     /**
      * Sets the name of a Region and updates the config to match
+     * 
      * @param name String name
      * @return false if the name is already taken
      */
     public boolean setName(String name) {
-        if(NobilityRegions.getRegionManager().getRegionByName(name) != null) return false;
+        if (NobilityRegions.getRegionManager().getRegionByName(name) != null)
+            return false;
 
         this.name = name;
         Configs.region(this).setName(name).save();
@@ -45,7 +48,9 @@ public class Region {
     } // setName
 
     /**
-     * Sets whether this region is habitable or wilderness and updates the config to match
+     * Sets whether this region is habitable or wilderness and updates the config to
+     * match
+     * 
      * @param value true if habitable
      */
     public void setHabitable(boolean value) {
@@ -54,9 +59,11 @@ public class Region {
     } // setHabitable
 
     /**
-     * Sets a resource with a value (overwrites existing resources with the same name) and updates the config to match
+     * Sets a resource with a value (overwrites existing resources with the same
+     * name) and updates the config to match
+     * 
      * @param resource String name of resource
-     * @param value int value
+     * @param value    int value
      */
     public void setResource(RegionResource resource, int value) {
         resources.put(resource, value);
@@ -65,6 +72,7 @@ public class Region {
 
     /**
      * Removes a resource from this region and updates the config to match
+     * 
      * @param resource String name of resource
      */
     public void removeResource(RegionResource resource) {
@@ -90,15 +98,16 @@ public class Region {
 
     public double getResource(RegionResource resource) {
         if (!resources.containsKey(resource)) {
-            Bukkit.getLogger().warning("A resource (" + resource.toString() + ")has been requested in a region (" + this.name + ") where it does not exist");
-        	return 0;
+            Bukkit.getLogger().warning("A resource (" + resource.toString() + ")has been requested in a region ("
+                    + this.name + ") where it does not exist");
+            return 0;
         }
         return resources.get(resource).intValue();
     }
-    
+
     public double getResource(String resourceString) {
-    	RegionResource resource = RegionResource.getResource(resourceString);
-    	return getResource(resource);
+        RegionResource resource = RegionResource.getResource(resourceString);
+        return getResource(resource);
     }
 
     public Map<RegionResource, Integer> getResources() {
@@ -107,8 +116,9 @@ public class Region {
 
     @Override
     public boolean equals(Object o) {
-        if(o instanceof Region) {
-            if(((Region) o).name.equalsIgnoreCase(name)) return true;
+        if (o instanceof Region) {
+            if (((Region) o).name.equalsIgnoreCase(name))
+                return true;
         } // if
 
         return false;

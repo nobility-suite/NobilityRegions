@@ -49,7 +49,7 @@ public class NobilityRegions extends JavaPlugin {
     /**
      * Access the RegionMaster to retrieve a Region object
      * 
-     *  Replaced by {@link #getRegionManager()}
+     * Replaced by {@link #getRegionManager()}
      * 
      * @return RegionManager
      */

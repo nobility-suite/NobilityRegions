@@ -29,18 +29,20 @@ public class Configs {
 
         /**
          * Checks to see if a name is unique
+         * 
          * @param name String name
          * @return false if name is used more than once for a Region in the config
          */
         private boolean isUniqueName(String name) {
             boolean used = false;
 
-            for(String worldString: config.getConfigurationSection("regions").getKeys(false)) {
-                for(String biomeString: config.getConfigurationSection("regions." + worldString).getKeys(false)) {
-                    ConfigurationSection regionSection = config.getConfigurationSection("regions." + worldString + "." + biomeString);
+            for (String worldString : config.getConfigurationSection("regions").getKeys(false)) {
+                for (String biomeString : config.getConfigurationSection("regions." + worldString).getKeys(false)) {
+                    ConfigurationSection regionSection = config
+                            .getConfigurationSection("regions." + worldString + "." + biomeString);
 
-                    if(regionSection.getString("name").equalsIgnoreCase(name)) {
-                        if(used) {
+                    if (regionSection.getString("name").equalsIgnoreCase(name)) {
+                        if (used) {
                             return false;
                         } else {
                             used = true;
@@ -56,7 +58,7 @@ public class Configs {
          * Saves the changes to the config
          */
         public void save() {
-            for(String label: changes.keySet()) {
+            for (String label : changes.keySet()) {
                 config.set(key + "." + label, changes.get(label));
             } // for
 
@@ -65,6 +67,7 @@ public class Configs {
 
         /**
          * Loads a Region object from the config
+         * 
          * @return Region object
          */
         protected Region load() {
@@ -75,10 +78,10 @@ public class Configs {
             Map<RegionResource, Integer> resources;
 
             // NAME
-            if(config.isSet(key + ".name")) {
+            if (config.isSet(key + ".name")) {
                 name = config.getString(key + ".name");
 
-                if(!isUniqueName(name)) {
+                if (!isUniqueName(name)) {
                     NobilityRegions.getInstance().getLogger().severe("The region name '" + name
                             + "' has already been used. Re-naming to '" + worldName + "-" + biomeName + "'");
                     name = worldName + "-" + biomeName;
@@ -90,7 +93,7 @@ public class Configs {
             } // if/else
 
             // HABITABLE
-            if(config.isSet(key + ".habitable")) {
+            if (config.isSet(key + ".habitable")) {
                 habitable = config.getBoolean(key + ".habitable");
             } else {
                 habitable = true;
@@ -99,10 +102,10 @@ public class Configs {
 
             // RESOURCES
             resources = new HashMap<>();
-            if(config.isSet(key + ".resource")) {
+            if (config.isSet(key + ".resource")) {
                 ConfigurationSection resourceConfig = config.getConfigurationSection(key + ".resource");
 
-                for(String resourceString: resourceConfig.getKeys(false)) {
+                for (String resourceString : resourceConfig.getKeys(false)) {
                     RegionResource resource = RegionResource.getResource(resourceString);
                     resources.put(resource, resourceConfig.getInt(resourceString));
                 } // for
@@ -136,6 +139,7 @@ public class Configs {
 
     /**
      * Accesses the config for a region
+     * 
      * @param region Region to configure
      * @return ConfigRegion object
      */
@@ -145,6 +149,7 @@ public class Configs {
 
     /**
      * Accesses the config for a region with the World and Biome objects
+     * 
      * @param world World world
      * @param biome Biome biome
      * @return ConfigRegion object
@@ -155,6 +160,7 @@ public class Configs {
 
     /**
      * Accesses the config for a region with the name of the world and biome
+     * 
      * @param worldName String world name
      * @param biomeName String biome name
      * @return ConfigRegion object

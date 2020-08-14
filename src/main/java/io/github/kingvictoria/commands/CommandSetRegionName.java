@@ -13,35 +13,38 @@ public class CommandSetRegionName implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender commandSender, Command command, String label, String[] args) {
-        if(!commandSender.isOp()) {
+        if (!commandSender.isOp()) {
             commandSender.sendMessage(ChatColor.RED + "Usage of this command is restricted");
             return true;
         } // if
 
-        if(!(commandSender instanceof Player) && args.length == 0) {
-            commandSender.sendMessage(ChatColor.RED + "This command can't be used from the console without specifying a region");
+        if (!(commandSender instanceof Player) && args.length == 0) {
+            commandSender.sendMessage(
+                    ChatColor.RED + "This command can't be used from the console without specifying a region");
             return true;
         } // if
 
-        if(!(commandSender instanceof Conversable)) {
+        if (!(commandSender instanceof Conversable)) {
             commandSender.sendMessage(ChatColor.RED + "This command requires conversation");
             return true;
         } // if
 
         Region region;
 
-        if(args.length == 0) {
+        if (args.length == 0) {
             Player player = (Player) commandSender;
-            region = NobilityRegions.getRegionManager().getRegion(player.getWorld(), player.getLocation().getBlock().getBiome());
+            region = NobilityRegions.getRegionManager().getRegion(player.getWorld(),
+                    player.getLocation().getBlock().getBiome());
 
-            if(region == null) {
-                commandSender.sendMessage(ChatColor.DARK_RED + "" + ChatColor.BOLD + "ERROR: " + ChatColor.RED + "This area is not a region");
+            if (region == null) {
+                commandSender.sendMessage(ChatColor.DARK_RED + "" + ChatColor.BOLD + "ERROR: " + ChatColor.RED
+                        + "This area is not a region");
                 return true;
             } // if
         } else {
             region = NobilityRegions.getRegionManager().getRegionByName(String.join(" ", args));
 
-            if(region == null) {
+            if (region == null) {
                 commandSender.sendMessage(ChatColor.RED + "Invalid Region");
                 return true;
             } // if
@@ -49,27 +52,26 @@ public class CommandSetRegionName implements CommandExecutor {
 
         ConversationFactory factory = new ConversationFactory(NobilityRegions.getInstance());
 
-        Conversation conv = factory
-            .withFirstPrompt(new StringPrompt() {
-                @Override
-                public String getPromptText(ConversationContext conversationContext) {
-                    return "Enter a new name:";
-                }
+        Conversation conv = factory.withFirstPrompt(new StringPrompt() {
+            @Override
+            public String getPromptText(ConversationContext conversationContext) {
+                return "Enter a new name:";
+            }
 
-                @Override
-                public Prompt acceptInput(ConversationContext conversationContext, String s) {
-                    if(!region.setName(s)) {
-                        conversationContext.getForWhom().sendRawMessage(ChatColor.RED + "That region name is already taken!");
-                        return null;
-                    }
-
-                    conversationContext.getForWhom().sendRawMessage(ChatColor.YELLOW + "The region has been re-named to " + ChatColor.BLUE + "" + ChatColor.BOLD + s);
+            @Override
+            public Prompt acceptInput(ConversationContext conversationContext, String s) {
+                if (!region.setName(s)) {
+                    conversationContext.getForWhom()
+                            .sendRawMessage(ChatColor.RED + "That region name is already taken!");
                     return null;
                 }
-            })
-            .withPrefix(arg0 -> ChatColor.BLUE + "" + ChatColor.BOLD + "[" + NobilityRegions.getInstance().getName() + "]" + ChatColor.YELLOW + " ")
-            .withLocalEcho(false)
-            .buildConversation((Conversable) commandSender);
+
+                conversationContext.getForWhom().sendRawMessage(ChatColor.YELLOW + "The region has been re-named to "
+                        + ChatColor.BLUE + "" + ChatColor.BOLD + s);
+                return null;
+            }
+        }).withPrefix(arg0 -> ChatColor.BLUE + "" + ChatColor.BOLD + "[" + NobilityRegions.getInstance().getName() + "]"
+                + ChatColor.YELLOW + " ").withLocalEcho(false).buildConversation((Conversable) commandSender);
         conv.begin();
 
         return true;
