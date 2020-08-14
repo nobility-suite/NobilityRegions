@@ -1,7 +1,7 @@
 package io.github.kingvictoria.commands;
 
 import io.github.kingvictoria.NobilityRegions;
-import io.github.kingvictoria.nodes.Node;
+import io.github.kingvictoria.regions.nodes.Node;
 import io.github.kingvictoria.regions.Region;
 
 import org.bukkit.ChatColor;

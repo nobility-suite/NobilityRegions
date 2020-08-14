@@ -1,8 +1,8 @@
 package io.github.kingvictoria;
 
 import io.github.kingvictoria.commands.*;
-import io.github.kingvictoria.nodes.Node;
-import io.github.kingvictoria.nodes.NodeManager;
+import io.github.kingvictoria.regions.nodes.Node;
+import io.github.kingvictoria.regions.nodes.NodeManager;
 import io.github.kingvictoria.regions.RegionManager;
 
 import java.time.chrono.ThaiBuddhistChronology;

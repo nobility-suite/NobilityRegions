@@ -1,4 +1,4 @@
-package io.github.kingvictoria.nodes;
+package io.github.kingvictoria.regions.nodes;
 
 import java.util.ArrayList;
 import java.util.UUID;
