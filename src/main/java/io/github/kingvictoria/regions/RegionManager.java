@@ -1,9 +1,11 @@
-package io.github.kingvictoria;
+package io.github.kingvictoria.regions;
 
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.Biome;
 import org.bukkit.configuration.Configuration;
+
+import io.github.kingvictoria.Configs;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,7 +14,7 @@ public class RegionManager {
 
     private List<Region> regions;
 
-    protected RegionManager(Configuration config, List<World> worlds) {
+    public RegionManager(Configuration config, List<World> worlds) {
         regions = new ArrayList<>();
 
         for (World world : worlds) {

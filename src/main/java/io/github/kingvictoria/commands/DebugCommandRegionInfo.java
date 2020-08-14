@@ -7,8 +7,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import io.github.kingvictoria.NobilityRegions;
-import io.github.kingvictoria.Region;
-import io.github.kingvictoria.RegionResource;
+import io.github.kingvictoria.regions.Region;
 
 public class DebugCommandRegionInfo implements CommandExecutor {
 
@@ -41,11 +40,7 @@ public class DebugCommandRegionInfo implements CommandExecutor {
         else
             commandSender.sendMessage(ChatColor.YELLOW + "Habitability: " + ChatColor.BLUE + "Wilderness");
 
-        commandSender.sendMessage(ChatColor.YELLOW + "-- Resources --");
-        for (RegionResource resource : region.getResources().keySet()) {
-            commandSender.sendMessage(
-                    ChatColor.YELLOW + resource.toString() + ": " + ChatColor.BLUE + region.getResource(resource));
-        } // for
+        // TODO: Display Nodes in this Region
 
         return true;
     } // onCommand

@@ -3,6 +3,7 @@ package io.github.kingvictoria;
 import io.github.kingvictoria.commands.*;
 import io.github.kingvictoria.nodes.Node;
 import io.github.kingvictoria.nodes.NodeManager;
+import io.github.kingvictoria.regions.RegionManager;
 
 import java.time.chrono.ThaiBuddhistChronology;
 import java.util.List;
@@ -22,20 +23,19 @@ public class NobilityRegions extends JavaPlugin {
     public void onEnable() {
         instance = this;
 
-        // Listeners
+        // Register Events
         getServer().getPluginManager().registerEvents(new RegionChangeListener(), this);
 
-        // Commands
+        // Register Commands
         this.getCommand("listregions").setExecutor(new DebugCommandListRegions());
         this.getCommand("searchregions").setExecutor(new DebugCommandSearchRegions());
         this.getCommand("regioninfo").setExecutor(new DebugCommandRegionInfo());
         this.getCommand("getregion").setExecutor(new CommandGetRegion());
         this.getCommand("setregionname").setExecutor(new CommandSetRegionName());
         this.getCommand("setregionhabitability").setExecutor(new CommandSetRegionHabitability());
-        this.getCommand("setregionresource").setExecutor(new CommandSetRegionResource());
         this.getCommand("addnode").setExecutor(new CommandAddNode());
 
-        // Regions Initialization
+        // Initialize  Managers
         regionManager = new RegionManager(getConfig(), getServer().getWorlds());
         nodeManager = new NodeManager();
         saveConfig();

@@ -9,7 +9,7 @@ import org.bukkit.block.Biome;
 import org.bukkit.inventory.ItemStack;
 
 import io.github.kingvictoria.NobilityRegions;
-import io.github.kingvictoria.Region;
+import io.github.kingvictoria.regions.Region;
 
 public class NodeManager {
 

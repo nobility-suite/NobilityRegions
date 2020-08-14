@@ -6,6 +6,8 @@ import org.bukkit.block.Biome;
 import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.ConfigurationSection;
 
+import io.github.kingvictoria.regions.Region;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -70,12 +72,11 @@ public class Configs {
          * 
          * @return Region object
          */
-        protected Region load() {
+        public Region load() {
             World world = Bukkit.getWorld(worldName);
             Biome biome = Biome.valueOf(biomeName);
             String name;
             boolean habitable;
-            Map<RegionResource, Integer> resources;
 
             // NAME
             if (config.isSet(key + ".name")) {
@@ -100,19 +101,8 @@ public class Configs {
                 setHabitable(true);
             } // if/else
 
-            // RESOURCES
-            resources = new HashMap<>();
-            if (config.isSet(key + ".resource")) {
-                ConfigurationSection resourceConfig = config.getConfigurationSection(key + ".resource");
-
-                for (String resourceString : resourceConfig.getKeys(false)) {
-                    RegionResource resource = RegionResource.getResource(resourceString);
-                    resources.put(resource, resourceConfig.getInt(resourceString));
-                } // for
-            } // if
-
             save();
-            return new Region(name, world, biome, habitable, resources);
+            return new Region(name, world, biome, habitable);
         } // load
 
         public ConfigRegion setName(String name) {
@@ -124,17 +114,6 @@ public class Configs {
             changes.put("habitable", habitable);
             return this;
         } // setHabitable
-
-        public ConfigRegion putResource(RegionResource resource, int value) {
-            changes.put("resource." + resource.toString(), value);
-            return this;
-        } // putResource
-
-        public ConfigRegion deleteResource(RegionResource resource) {
-            changes.put("resource." + resource.toString(), null);
-            return this;
-        } // deleteResource
-
     } // ConfigRegion
 
     /**

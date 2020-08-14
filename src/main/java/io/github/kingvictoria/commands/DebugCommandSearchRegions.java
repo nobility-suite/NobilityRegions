@@ -1,7 +1,8 @@
 package io.github.kingvictoria.commands;
 
 import io.github.kingvictoria.NobilityRegions;
-import io.github.kingvictoria.Region;
+import io.github.kingvictoria.regions.Region;
+
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;

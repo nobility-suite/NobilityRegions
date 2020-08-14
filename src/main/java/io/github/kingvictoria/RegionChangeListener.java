@@ -8,6 +8,8 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerMoveEvent;
 
+import io.github.kingvictoria.regions.Region;
+
 public class RegionChangeListener implements Listener {
 
     @EventHandler

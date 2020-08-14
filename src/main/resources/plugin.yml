@@ -15,10 +15,6 @@ commands:
     description: Set the habitability of a region (defaults to region you are in)
     usage: /setregionhabitability (name of region to change) <true|false>
     aliases: [nrsh]
-  setregionresource:
-    description: Set a resource of a region (defaults to the region you are in)
-    usage: /setregionresource (name of region to add a resource to)
-    aliases: [nrsr]
   listregions:
     description: (DEBUG) Lists all of the Regions
     usage: /listregions (world)
