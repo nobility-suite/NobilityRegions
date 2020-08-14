@@ -36,7 +36,7 @@ public class Region {
      * @return false if the name is already taken
      */
     public boolean setName(String name) {
-        if(NobilityRegions.getRegionMaster().getRegionByName(name) != null) return false;
+        if(NobilityRegions.getRegionManager().getRegionByName(name) != null) return false;
 
         this.name = name;
         Configs.region(this).setName(name).save();

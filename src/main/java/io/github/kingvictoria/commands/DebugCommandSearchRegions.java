@@ -20,7 +20,7 @@ public class DebugCommandSearchRegions implements CommandExecutor {
 
         commandSender.sendMessage(ChatColor.YELLOW + "==== Regions Matching '"+search+"' ====");
 
-        for(Region region: NobilityRegions.getRegionMaster().getRegions()) {
+        for(Region region: NobilityRegions.getRegionManager().getRegions()) {
             if(!region.getName().matches("(?i:.*"+search+".*)")) continue;
 
             commandSender.sendMessage(ChatColor.BLUE + region.getName());

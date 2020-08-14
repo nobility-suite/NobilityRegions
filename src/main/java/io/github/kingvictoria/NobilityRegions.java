@@ -1,14 +1,21 @@
 package io.github.kingvictoria;
 
 import io.github.kingvictoria.commands.*;
+import io.github.kingvictoria.nodes.Node;
 import io.github.kingvictoria.nodes.NodeManager;
 
+import java.time.chrono.ThaiBuddhistChronology;
+import java.util.List;
+
+import org.bukkit.Location;
+import org.bukkit.World;
+import org.bukkit.block.Biome;
 import org.bukkit.plugin.java.JavaPlugin;
 
 @SuppressWarnings("unused")
 public class NobilityRegions extends JavaPlugin {
-    private static RegionMaster regionMaster;
     private static NobilityRegions instance;
+    private static RegionManager regionManager;
     private static NodeManager nodeManager;
 
     @Override
@@ -29,7 +36,7 @@ public class NobilityRegions extends JavaPlugin {
         this.getCommand("addnode").setExecutor(new CommandAddNode());
 
         // Regions Initialization
-        regionMaster = new RegionMaster(getConfig(), getServer().getWorlds());
+        regionManager = new RegionManager(getConfig(), getServer().getWorlds());
         nodeManager = new NodeManager();
         saveConfig();
     } // onEnable
@@ -37,29 +44,44 @@ public class NobilityRegions extends JavaPlugin {
     @Override
     public void onDisable() {
         saveConfig();
-    } // onDisable
+    }
 
     /**
      * Access the RegionMaster to retrieve a Region object
-     * @return
+     * 
+     *  Replaced by {@link #getRegionManager()}
+     * 
+     * @return RegionManager
      */
-    public static RegionMaster getRegionMaster() {
-        return regionMaster;
-    } // getRegionMaster
+    @Deprecated
+    public static RegionManager getRegionMaster() {
+        return regionManager;
+    }
 
     /**
-     * Access the NodeManager to retrieve a Node object
+     * Access the RegionManager to interact with Region objects
+     * 
+     * @return RegionManager
+     */
+    public static RegionManager getRegionManager() {
+        return regionManager;
+    }
+
+    /**
+     * Access the NodeManager to interact with Region objects
+     * 
      * @return
      */
     public static NodeManager getNodeManager() {
         return nodeManager;
-    } // getNodeManager
-    
+    }
+
     /**
      * Access the NobilityRegions Instance
+     * 
      * @return
      */
     public static NobilityRegions getInstance() {
         return instance;
-    } // getInstance
+    }
 } // class

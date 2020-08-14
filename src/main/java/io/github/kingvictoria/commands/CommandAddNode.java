@@ -20,7 +20,7 @@ public class CommandAddNode implements CommandExecutor {
         } // if
 
         Player player = (Player) commandSender;
-        Region region = NobilityRegions.getRegionMaster().getRegion(player.getWorld(), player.getLocation().getBlock().getBiome());
+        Region region = NobilityRegions.getRegionManager().getRegion(player.getWorld(), player.getLocation().getBlock().getBiome());
 
         if(region == null) {
             commandSender.sendMessage(ChatColor.DARK_RED + "" + ChatColor.BOLD + "ERROR: " + ChatColor.RED + "This area is not a region");
@@ -32,7 +32,7 @@ public class CommandAddNode implements CommandExecutor {
         	String temp = args[1];
         	int slots = Integer.parseInt(temp);
             Node n = new Node(name,slots);
-            NobilityRegions.getInstance().getNodeManager().addNode(region, n);
+            NobilityRegions.getNodeManager().addNode(region, n);
             commandSender.sendMessage(ChatColor.YELLOW + "Added Node to " + ChatColor.BLUE + "" + ChatColor.BOLD + region.getName() + ChatColor.YELLOW + " region");
 
         }else {

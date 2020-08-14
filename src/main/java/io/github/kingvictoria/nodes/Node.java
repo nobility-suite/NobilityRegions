@@ -18,9 +18,10 @@ public class Node {
 		this.name = name;
 		this.slots = slots;
 		
-		ArrayList<ItemStack> output = new ArrayList<ItemStack>();
-		ArrayList<UUID> workers = new ArrayList<UUID>();
+		output = new ArrayList<ItemStack>();
 		output.add(new ItemStack(Material.STONE));
+		
+		workers = new ArrayList<UUID>();
 	}
 	
 	public boolean addWorker(Player p) {
