@@ -1,8 +1,6 @@
 package io.github.kingvictoria.regions.nodes;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -12,19 +10,19 @@ import org.bukkit.inventory.ItemStack;
 import io.github.kingvictoria.NobilityRegions;
 import io.github.kingvictoria.regions.Region;
 
+/**
+ * Old NodeManager (Nodes are now handled within the Region object).
+ */
+@Deprecated
 public class NodeManager {
 
-	HashMap<Region, ArrayList<Node>> nodeMap;
-
-	public NodeManager() {
-		nodeMap = new HashMap<Region, ArrayList<Node>>();
-
-		ArrayList<Node> temp = new ArrayList<Node>();
-
-		for (Region r : NobilityRegions.getRegionManager().getRegions()) {
-			nodeMap.put(r, temp);
-		}
-
+	/**
+	 * Generates Lorafaul Mines, The Weeping Willows, and Verdant Valley Nodes for the world-MOUNTAINS Region.
+	 * 
+	 * Will be replaced with a default config.
+	 */
+	@Deprecated
+	public static void generateSampleNodes() {
 		// Sample nodes for testing
 
 		ArrayList<ItemStack> mats = new ArrayList<ItemStack>();
@@ -47,18 +45,34 @@ public class NodeManager {
 		nodes.add(forest);
 		nodes.add(mine);
 		Region test = NobilityRegions.getRegionManager().getRegion(Bukkit.getWorld("world"), Biome.MOUNTAINS);
-		nodeMap.put(test, nodes);
 
+		for (Node node: nodes) test.addNode(node);
 	}
 
-	public ArrayList<Node> getNodes(Region r) {
-		return nodeMap.get(r);
+	/**
+	 * Gets the Nodes from a Region.
+	 * 
+	 * Replaced by {@link Region#getNodes()}.
+	 * 
+	 * @param region Region to get the Nodes from
+	 * @return
+	 */
+	@Deprecated
+	public ArrayList<Node> getNodes(Region region) {
+		return (ArrayList<Node>) region.getNodes();
 	}
 
-	public void addNode(Region r, Node n) {
-		ArrayList<Node> temp = nodeMap.get(r);
-		temp.add(n);
-		nodeMap.put(r, temp);
+	/**
+	 * Adds a node to a Region.
+	 * 
+	 * Replaced by {@link Region#addNode(Node)}.
+	 * 
+	 * @param region Region to add the Node to
+	 * @param node Node to add to the Region
+	 */
+	@Deprecated
+	public void addNode(Region region, Node node) {
+		region.addNode(node);
 	}
 
 }

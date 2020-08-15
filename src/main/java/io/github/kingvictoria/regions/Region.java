@@ -37,6 +37,11 @@ public class Region {
         this.nodes = nodes;
     }
 
+    public void addNode(Node node) {
+        // TODO: Configs
+        nodes.add(node);
+    }
+
     /**
      * Sets the name of a Region and updates the config to match
      * 
@@ -79,6 +84,10 @@ public class Region {
 
     public boolean isHabitable() {
         return habitable;
+    }
+
+    public List<Node> getNodes() {
+        return nodes;
     }
 
     @Override

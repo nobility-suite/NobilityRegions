@@ -1,6 +1,5 @@
 package io.github.kingvictoria;
 
-import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.block.Biome;
 import org.bukkit.configuration.Configuration;
@@ -90,11 +89,11 @@ public class Configs {
                                     + world.getName() + "-" + biome.name() + "'");
                     name = world.getName() + "-" + biome.name();
                     setName(name);
-                } // if
+                }
             } else {
                 name = world.getName() + "-" + biome.name();
                 setName(name);
-            } // if/else
+            }
 
             // HABITABLE
             if (config.isSet("habitable")) {
@@ -102,7 +101,7 @@ public class Configs {
             } else {
                 habitable = true;
                 setHabitable(true);
-            } // if/else
+            }
 
             if (config.isConfigurationSection("nodes")) {
                 // TODO: load nodes

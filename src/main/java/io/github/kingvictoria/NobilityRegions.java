@@ -37,19 +37,21 @@ public class NobilityRegions extends JavaPlugin {
 
         // Initialize  Managers
         regionManager = new RegionManager(getConfig(), getServer().getWorlds());
+
+        // TODO: THIS CODE IS TEMPORARY! NOBILITY MUST BE REFACTORED TO COMPLY BEFORE REMOVAL
         nodeManager = new NodeManager();
+
+        // TODO: THIS CODE IS TEMPORARY! WILL BE REPLACED WITH A DEFAULT CONFIG
+        NodeManager.generateSampleNodes();
+
+        // Save Config
         saveConfig();
     } // onEnable
 
-    @Override
-    public void onDisable() {
-        saveConfig();
-    }
-
     /**
-     * Access the RegionMaster to retrieve a Region object
+     * Access the RegionMaster to retrieve a Region object.
      * 
-     * Replaced by {@link #getRegionManager()}
+     * Replaced by {@link #getRegionManager()}.
      * 
      * @return RegionManager
      */
