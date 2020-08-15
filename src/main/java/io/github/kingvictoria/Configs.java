@@ -7,27 +7,29 @@ import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.ConfigurationSection;
 
 import io.github.kingvictoria.regions.Region;
+import io.github.kingvictoria.regions.nodes.Node;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class Configs {
 
     public static class ConfigRegion {
 
-        private String worldName;
-        private String biomeName;
-        private String key;
         private Map<String, Object> changes;
-        private Configuration config;
+        private ConfigurationSection config;
+        private World world;
+        private Biome biome;
 
-        private ConfigRegion(String worldName, String biomeName) {
-            this.biomeName = biomeName;
-            this.worldName = worldName;
-            this.key = "regions" + "." + worldName + "." + biomeName;
+        private ConfigRegion(World world, Biome biome) {
             changes = new HashMap<>();
-            config = NobilityRegions.getInstance().getConfig();
-        } // Constructor
+            config = NobilityRegions.getInstance().getConfig()
+                    .getConfigurationSection("regions." + world.getName() + "." + biome.name());
+            this.world = world;
+            this.biome = biome;
+        }
 
         /**
          * Checks to see if a name is unique
@@ -37,6 +39,7 @@ public class Configs {
          */
         private boolean isUniqueName(String name) {
             boolean used = false;
+            Configuration config = NobilityRegions.getInstance().getConfig();
 
             for (String worldString : config.getConfigurationSection("regions").getKeys(false)) {
                 for (String biomeString : config.getConfigurationSection("regions." + worldString).getKeys(false)) {
@@ -49,23 +52,23 @@ public class Configs {
                         } else {
                             used = true;
                         }
-                    } // if
-                } // for
-            } // for
+                    }
+                }
+            }
 
             return true;
-        } // name
+        }
 
         /**
          * Saves the changes to the config
          */
         public void save() {
             for (String label : changes.keySet()) {
-                config.set(key + "." + label, changes.get(label));
-            } // for
+                config.set(label, changes.get(label));
+            }
 
             NobilityRegions.getInstance().saveConfig();
-        } // save
+        }
 
         /**
          * Loads a Region object from the config
@@ -73,48 +76,59 @@ public class Configs {
          * @return Region object
          */
         public Region load() {
-            World world = Bukkit.getWorld(worldName);
-            Biome biome = Biome.valueOf(biomeName);
             String name;
             boolean habitable;
+            List<Node> nodes = new ArrayList<>();
 
             // NAME
-            if (config.isSet(key + ".name")) {
-                name = config.getString(key + ".name");
+            if (config.isSet("name")) {
+                name = config.getString("name");
 
                 if (!isUniqueName(name)) {
-                    NobilityRegions.getInstance().getLogger().severe("The region name '" + name
-                            + "' has already been used. Re-naming to '" + worldName + "-" + biomeName + "'");
-                    name = worldName + "-" + biomeName;
+                    NobilityRegions.getInstance().getLogger()
+                            .severe("The region name '" + name + "' has already been used." + " Re-naming to '"
+                                    + world.getName() + "-" + biome.name() + "'");
+                    name = world.getName() + "-" + biome.name();
                     setName(name);
                 } // if
             } else {
-                name = worldName + "-" + biomeName;
+                name = world.getName() + "-" + biome.name();
                 setName(name);
             } // if/else
 
             // HABITABLE
-            if (config.isSet(key + ".habitable")) {
-                habitable = config.getBoolean(key + ".habitable");
+            if (config.isSet("habitable")) {
+                habitable = config.getBoolean("habitable");
             } else {
                 habitable = true;
                 setHabitable(true);
             } // if/else
 
+            if (config.isConfigurationSection("nodes")) {
+                // TODO: load nodes
+            } else {
+                // TODO: set empty list of nodes
+            }
+
             save();
-            return new Region(name, world, biome, habitable);
-        } // load
+            return new Region(name, world, biome, habitable, nodes);
+        }
 
         public ConfigRegion setName(String name) {
             changes.put("name", name);
             return this;
-        } // setName
+        }
 
         public ConfigRegion setHabitable(boolean habitable) {
             changes.put("habitable", habitable);
             return this;
-        } // setHabitable
-    } // ConfigRegion
+        }
+
+        public ConfigRegion addNode(Node node) {
+            
+            return this;
+        }
+    }
 
     /**
      * Accesses the config for a region
@@ -124,28 +138,17 @@ public class Configs {
      */
     public static ConfigRegion region(Region region) {
         return region(region.getWorld(), region.getBiome());
-    } // region(Region)
+    }
 
     /**
-     * Accesses the config for a region with the World and Biome objects
+     * Accesses the config for a region
      * 
-     * @param world World world
-     * @param biome Biome biome
+     * @param world World the Region is in
+     * @param biome Biome the Region is in
      * @return ConfigRegion object
      */
     public static ConfigRegion region(World world, Biome biome) {
-        return region(world.getName(), biome.name());
-    } // region(World, Biome)
-
-    /**
-     * Accesses the config for a region with the name of the world and biome
-     * 
-     * @param worldName String world name
-     * @param biomeName String biome name
-     * @return ConfigRegion object
-     */
-    public static ConfigRegion region(String worldName, String biomeName) {
-        return new ConfigRegion(worldName, biomeName);
-    } // region(String, String)
+        return new ConfigRegion(world, biome);
+    }
 
 } // Config

@@ -2,6 +2,7 @@ package io.github.kingvictoria.regions.nodes;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -26,26 +27,20 @@ public class NodeManager {
 
 		// Sample nodes for testing
 
-		Node mine = new Node("Lorafaul Mines", 3);
-		mine.type = NodeType.MINE;
 		ArrayList<ItemStack> mats = new ArrayList<ItemStack>();
 		mats.add(new ItemStack(Material.IRON_ORE, 25));
 		mats.add(new ItemStack(Material.STONE, 60));
-		mine.output = new ArrayList<ItemStack>(mats);
+		Node mine = new Node("Lorafaul Mines", 3, NodeType.MINE, new ArrayList<>(mats), new ArrayList<>());
 
 		mats.clear();
-		Node forest = new Node("The Weeping Willows", 2);
-		forest.type = NodeType.FOREST;
 		mats.add(new ItemStack(Material.DARK_OAK_LOG, 30));
 		mats.add(new ItemStack(Material.DARK_OAK_PLANKS, 50));
-		forest.output = new ArrayList<ItemStack>(mats);
+		Node forest = new Node("The Weeping Willows", 2, NodeType.FOREST, new ArrayList<>(mats), new ArrayList<>());
 
 		mats.clear();
-		Node farm = new Node("Verdant Valley", 5);
-		farm.type = NodeType.FARM;
 		mats.add(new ItemStack(Material.CARROT, 50));
 		mats.add(new ItemStack(Material.HAY_BLOCK, 10));
-		farm.output = new ArrayList<ItemStack>(mats);
+		Node farm = new Node("Verdant Valley", 5, NodeType.FARM, new ArrayList<>(mats), new ArrayList<>());
 
 		ArrayList<Node> nodes = new ArrayList<Node>();
 		nodes.add(farm);

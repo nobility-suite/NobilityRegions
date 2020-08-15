@@ -1,10 +1,14 @@
 package io.github.kingvictoria.regions;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.bukkit.World;
 import org.bukkit.block.Biome;
 
 import io.github.kingvictoria.Configs;
 import io.github.kingvictoria.NobilityRegions;
+import io.github.kingvictoria.regions.nodes.Node;
 
 /**
  * A unique, World-Biome combination
@@ -14,6 +18,7 @@ public class Region {
     private World world;
     private Biome biome;
     private boolean habitable;
+    private List<Node> nodes;
 
     /**
      * Creates a Region from a String name, World, and Biome
@@ -21,12 +26,15 @@ public class Region {
      * @param name  The String name of this Region
      * @param world The World of this Region
      * @param biome The Biome of this Region
+     * @param habitable Whether this region is habitable (true) or wilderness (false)
+     * @param nodes The list of resource nodes that exist in this region
      */
-    public Region(String name, World world, Biome biome, boolean habitable) {
+    public Region(String name, World world, Biome biome, boolean habitable, List<Node> nodes) {
         this.name = name;
         this.world = world;
         this.biome = biome;
         this.habitable = habitable;
+        this.nodes = nodes;
     }
 
     /**

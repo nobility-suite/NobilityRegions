@@ -16,7 +16,7 @@ public class CommandGetRegion implements CommandExecutor {
         if (!(commandSender instanceof Player)) {
             commandSender.sendMessage(ChatColor.RED + "This command can't be used from the console");
             return true;
-        } // if
+        }
 
         Player player = (Player) commandSender;
         Region region = NobilityRegions.getRegionManager().getRegion(player.getWorld(),
@@ -26,12 +26,12 @@ public class CommandGetRegion implements CommandExecutor {
             commandSender.sendMessage(
                     ChatColor.DARK_RED + "" + ChatColor.BOLD + "ERROR: " + ChatColor.RED + "This area is not a region");
             return true;
-        } // if
+        }
 
         commandSender.sendMessage(ChatColor.YELLOW + "You are in the " + ChatColor.BLUE + "" + ChatColor.BOLD
                 + region.getName() + ChatColor.YELLOW + " region");
 
         return true;
-    } // onCommand
+    }
 
-} // class
+}
