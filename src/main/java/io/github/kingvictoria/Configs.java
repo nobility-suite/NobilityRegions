@@ -63,6 +63,7 @@ public class Configs {
             private ConfigRegion regionConfig;
 
             private ConfigNode(ConfigurationSection nodeConfig, ConfigRegion region) {
+                changes = new HashMap<>();
                 config = nodeConfig;
                 regionConfig = region;
             }
@@ -126,6 +127,11 @@ public class Configs {
 
                 if (config.isList("output")) {
                     output = (List<ItemStack>) config.getList("output");
+
+                    if (output.contains(null)) {
+                        Bukkit.getLogger().severe("Unable to load output for " + config.getCurrentPath());
+                        returnNull = true;
+                    }
                 } else {
                     Bukkit.getLogger().warning("Node " + config.getCurrentPath() + " has no output!");
                     returnNull = true;

@@ -47,6 +47,7 @@ public class CommandAddNode implements CommandExecutor {
             NodeType type = NodeType.valueOf(temp2);
             List<ItemStack> output = new ArrayList<>();
             output.add(new ItemStack(Material.STONE));
+
             region.makeNode(name, name, slots, type, output);
             commandSender.sendMessage(ChatColor.YELLOW + "Added Node to " + ChatColor.BLUE + "" + ChatColor.BOLD
                     + region.getName() + ChatColor.YELLOW + " region");

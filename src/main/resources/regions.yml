@@ -9,11 +9,11 @@ world:
         type: MINE
         output:
           - ==: org.bukkit.inventory.ItemStack
-            v: 1.14
+            v: 1976
             type: IRON_ORE
             amount: 25
           - ==: org.bukkit.inventory.ItemStack
-            v: 1.14
+            v: 1976
             type: STONE
             amount: 60
       The_Weeping_Willows:
@@ -22,11 +22,11 @@ world:
         type: FOREST
         output:
           - ==: org.bukkit.inventory.ItemStack
-            v: 1.14
+            v: 1976
             type: DARK_OAK_LOG
             amount: 30
           - ==: org.bukkit.inventory.ItemStack
-            v: 1.14
+            v: 1976
             type: DARK_OAK_PLANKS
             amount: 50
       Verdant_Valley:
@@ -35,10 +35,10 @@ world:
         type: FARM
         output:
           - ==: org.bukkit.inventory.ItemStack
-            v: 1.14
+            v: 1976
             type: CARROT
             amount: 50
           - ==: org.bukkit.inventory.ItemStack
-            v: 1.14
+            v: 1976
             type: HAY_BLOCK
             amount: 10
