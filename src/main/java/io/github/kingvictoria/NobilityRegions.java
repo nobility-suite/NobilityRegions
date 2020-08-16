@@ -2,9 +2,9 @@ package io.github.kingvictoria;
 
 import io.github.kingvictoria.commands.*;
 import io.github.kingvictoria.regions.nodes.Node;
-import io.github.kingvictoria.regions.nodes.NodeManager;
 import io.github.kingvictoria.regions.RegionManager;
 
+import java.io.File;
 import java.time.chrono.ThaiBuddhistChronology;
 import java.util.List;
 
@@ -17,7 +17,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 public class NobilityRegions extends JavaPlugin {
     private static NobilityRegions instance;
     private static RegionManager regionManager;
-    private static NodeManager nodeManager;
 
     @Override
     public void onEnable() {
@@ -34,18 +33,11 @@ public class NobilityRegions extends JavaPlugin {
         this.getCommand("setregionname").setExecutor(new CommandSetRegionName());
         this.getCommand("setregionhabitability").setExecutor(new CommandSetRegionHabitability());
         this.getCommand("addnode").setExecutor(new CommandAddNode());
+        this.getCommand("generateregions").setExecutor(new CommandGenerateRegions());
 
-        // Initialize  Managers
-        regionManager = new RegionManager(getConfig(), getServer().getWorlds());
-
-        // TODO: THIS CODE IS TEMPORARY! NOBILITY MUST BE REFACTORED TO COMPLY BEFORE REMOVAL
-        nodeManager = new NodeManager();
-
-        // TODO: THIS CODE IS TEMPORARY! WILL BE REPLACED WITH A DEFAULT CONFIG
-        NodeManager.generateSampleNodes();
-
-        // Save Config
-        saveConfig();
+        // Initializations
+        Configs.init(new File(getDataFolder(), "regions.yml"));
+        regionManager = new RegionManager();
     } // onEnable
 
     /**
@@ -67,15 +59,6 @@ public class NobilityRegions extends JavaPlugin {
      */
     public static RegionManager getRegionManager() {
         return regionManager;
-    }
-
-    /**
-     * Access the NodeManager to interact with Region objects
-     * 
-     * @return
-     */
-    public static NodeManager getNodeManager() {
-        return nodeManager;
     }
 
     /**

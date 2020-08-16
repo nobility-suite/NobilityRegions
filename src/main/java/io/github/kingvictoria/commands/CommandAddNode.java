@@ -1,7 +1,6 @@
 package io.github.kingvictoria.commands;
 
 import io.github.kingvictoria.NobilityRegions;
-import io.github.kingvictoria.regions.nodes.Node;
 import io.github.kingvictoria.regions.nodes.NodeType;
 import io.github.kingvictoria.regions.Region;
 
@@ -20,6 +19,11 @@ public class CommandAddNode implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender commandSender, Command command, String label, String[] args) {
+        if (!commandSender.isOp()) {
+            commandSender.sendMessage(ChatColor.RED + "Usage of this command is restricted");
+            return true;
+        }
+
         if (!(commandSender instanceof Player)) {
             commandSender.sendMessage(ChatColor.RED + "This command can't be used from the console");
             return true;
@@ -43,8 +47,7 @@ public class CommandAddNode implements CommandExecutor {
             NodeType type = NodeType.valueOf(temp2);
             List<ItemStack> output = new ArrayList<>();
             output.add(new ItemStack(Material.STONE));
-            Node n = new Node(name, slots, type, output, new ArrayList<>());
-            NobilityRegions.getNodeManager().addNode(region, n);
+            region.makeNode(name, name, slots, type, output);
             commandSender.sendMessage(ChatColor.YELLOW + "Added Node to " + ChatColor.BLUE + "" + ChatColor.BOLD
                     + region.getName() + ChatColor.YELLOW + " region");
 

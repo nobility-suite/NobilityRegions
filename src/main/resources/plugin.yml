@@ -11,6 +11,9 @@ commands:
     description: Shows information about a specific region
     usage: /regioninfo ("name of region")
     aliases: [nri]
+  generateregions:
+    description: Generates regions in the specified world (defaults the the world the player is in)
+    usage: /generateregions (world)
   setregionname:
     description: (DEBUG) Set the name of a region (defaults to region you are in)
     usage: /setregionname ("name of region to change") <"Name to change it to">

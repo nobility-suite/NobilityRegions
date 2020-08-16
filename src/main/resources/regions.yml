@@ -1,0 +1,44 @@
+world:
+  MOUNTAINS:
+    habitable: true
+    name: "The Great Heights"
+    nodes:
+      Lorafaul_Mines:
+        name: "Lorafaul Mines"
+        slots: 3
+        type: MINE
+        output:
+          - ==: org.bukkit.inventory.ItemStack
+            v: 1.14
+            type: IRON_ORE
+            amount: 25
+          - ==: org.bukkit.inventory.ItemStack
+            v: 1.14
+            type: STONE
+            amount: 60
+      The_Weeping_Willows:
+        name: "The Weeping Willows"
+        slots: 2
+        type: FOREST
+        output:
+          - ==: org.bukkit.inventory.ItemStack
+            v: 1.14
+            type: DARK_OAK_LOG
+            amount: 30
+          - ==: org.bukkit.inventory.ItemStack
+            v: 1.14
+            type: DARK_OAK_PLANKS
+            amount: 50
+      Verdant_Valley:
+        name: "Verdant Valley"
+        slots: 5
+        type: FARM
+        output:
+          - ==: org.bukkit.inventory.ItemStack
+            v: 1.14
+            type: CARROT
+            amount: 50
+          - ==: org.bukkit.inventory.ItemStack
+            v: 1.14
+            type: HAY_BLOCK
+            amount: 10

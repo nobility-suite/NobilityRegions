@@ -1,14 +1,15 @@
 package io.github.kingvictoria.regions;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.bukkit.World;
 import org.bukkit.block.Biome;
+import org.bukkit.inventory.ItemStack;
 
-import io.github.kingvictoria.Configs;
 import io.github.kingvictoria.NobilityRegions;
+import io.github.kingvictoria.Configs.ConfigRegion;
 import io.github.kingvictoria.regions.nodes.Node;
+import io.github.kingvictoria.regions.nodes.NodeType;
 
 /**
  * A unique, World-Biome combination
@@ -19,27 +20,33 @@ public class Region {
     private Biome biome;
     private boolean habitable;
     private List<Node> nodes;
+    private ConfigRegion config;
 
     /**
      * Creates a Region from a String name, World, and Biome
      * 
-     * @param name  The String name of this Region
-     * @param world The World of this Region
-     * @param biome The Biome of this Region
-     * @param habitable Whether this region is habitable (true) or wilderness (false)
-     * @param nodes The list of resource nodes that exist in this region
+     * @param name      The String name of this Region
+     * @param world     The World of this Region
+     * @param biome     The Biome of this Region
+     * @param habitable Whether this region is habitable (true) or wilderness
+     *                  (false)
+     * @param nodes     The list of resource nodes that exist in this region
+     * @param config    ConfigRegion configuration
      */
-    public Region(String name, World world, Biome biome, boolean habitable, List<Node> nodes) {
+    public Region(String name, World world, Biome biome, boolean habitable, List<Node> nodes, ConfigRegion config) {
         this.name = name;
         this.world = world;
         this.biome = biome;
         this.habitable = habitable;
         this.nodes = nodes;
+        this.config = config;
     }
 
-    public void addNode(Node node) {
-        // TODO: Configs
-        nodes.add(node);
+    public void makeNode(String id, String name, int slots, NodeType type, List<ItemStack> output) {
+        Node node = config.makeNode(id).setName(name).setSlots(slots).setType(type).setOutput(output).make();
+
+        if (node != null)
+            nodes.add(node);
     }
 
     /**
@@ -54,7 +61,7 @@ public class Region {
         }
 
         this.name = name;
-        Configs.region(this).setName(name).save();
+        config.setName(name).save();
 
         return true;
     }
@@ -67,7 +74,7 @@ public class Region {
      */
     public void setHabitable(boolean value) {
         habitable = value;
-        Configs.region(this).setHabitable(value).save();
+        config.setHabitable(value).save();
     }
 
     public String getName() {
@@ -92,10 +99,8 @@ public class Region {
 
     @Override
     public boolean equals(Object o) {
-        if (o instanceof Region) {
-            if (((Region) o).name.equalsIgnoreCase(name))
-                return true;
-        }
+        if (o instanceof Region && ((Region) o).biome.equals(biome) && ((Region) o).world.equals(world))
+            return true;
 
         return false;
     }

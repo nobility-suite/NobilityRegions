@@ -15,7 +15,7 @@ public class DebugCommandListRegions implements CommandExecutor {
         if (!commandSender.isOp()) {
             commandSender.sendMessage(ChatColor.RED + "Usage of this command is restricted");
             return true;
-        } // if
+        }
 
         commandSender.sendMessage(ChatColor.YELLOW + "==== Regions ====");
 
@@ -24,9 +24,8 @@ public class DebugCommandListRegions implements CommandExecutor {
                 continue;
 
             commandSender.sendMessage(ChatColor.BLUE + region.getName());
-        } // for
+        }
 
         return true;
-    } // onCommand
-
-} // class
+    }
+}

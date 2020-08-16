@@ -1,13 +1,18 @@
 package io.github.kingvictoria.commands;
 
+import java.util.UUID;
+
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
 import io.github.kingvictoria.NobilityRegions;
 import io.github.kingvictoria.regions.Region;
+import io.github.kingvictoria.regions.nodes.Node;
 
 public class DebugCommandRegionInfo implements CommandExecutor {
 
@@ -31,7 +36,7 @@ public class DebugCommandRegionInfo implements CommandExecutor {
             return true;
         } // if
 
-        commandSender.sendMessage(ChatColor.YELLOW + "==== " + region.getName() + " ====");
+        commandSender.sendMessage(ChatColor.YELLOW + "" + ChatColor.BOLD + "==== " + region.getName() + " ====");
         commandSender.sendMessage(ChatColor.YELLOW + "Biome: " + ChatColor.BLUE + region.getBiome().name());
         commandSender.sendMessage(ChatColor.YELLOW + "World: " + ChatColor.BLUE + region.getWorld().getName());
 
@@ -40,9 +45,40 @@ public class DebugCommandRegionInfo implements CommandExecutor {
         else
             commandSender.sendMessage(ChatColor.YELLOW + "Habitability: " + ChatColor.BLUE + "Wilderness");
 
-        // TODO: Display Nodes in this Region
+        if (region.getNodes().size() > 0) {
+            commandSender.sendMessage(ChatColor.YELLOW + "" + ChatColor.BOLD + "-- Nodes --");
+            for (Node node : region.getNodes()) {
+                commandSender.sendMessage(ChatColor.YELLOW + node.getName() + ":");
+                commandSender.sendMessage(ChatColor.YELLOW + " Slots: " + ChatColor.BLUE + "" + node.getSlots());
+                commandSender.sendMessage(ChatColor.YELLOW + " Type:  " + ChatColor.BLUE + node.getType().toString());
+                commandSender.sendMessage(ChatColor.YELLOW + " Output: ");
+                for (ItemStack item : node.getOutput()) {
+                    if (item == null) {
+                        commandSender.sendMessage(ChatColor.RED + " - ERROR!!");
+                        continue;
+                    }
+
+                    if (item.hasItemMeta()) {
+                        commandSender.sendMessage(
+                                ChatColor.BLUE + " - " + item.getAmount() + ", " + item.getItemMeta().getDisplayName());
+                    } else {
+                        commandSender.sendMessage(
+                                ChatColor.BLUE + " - " + item.getAmount() + ", " + item.getType().toString());
+                    }
+                }
+
+                if (node.getWorkers().size() > 0) {
+                    commandSender.sendMessage(ChatColor.YELLOW + " Workers: ");
+                    for (UUID worker : node.getWorkers()) {
+                        Player player = Bukkit.getPlayer(worker);
+                        commandSender.sendMessage(ChatColor.BLUE + " - " + player.getName());
+                    }
+                } else {
+                    commandSender.sendMessage(ChatColor.YELLOW + " Workers: " + ChatColor.BLUE + "None");
+                }
+            }
+        }
 
         return true;
-    } // onCommand
-
-} // class
+    }
+}

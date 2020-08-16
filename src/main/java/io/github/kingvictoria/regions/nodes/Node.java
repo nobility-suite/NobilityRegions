@@ -7,26 +7,39 @@ import java.util.UUID;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-public class Node {
-	private String name;
-	private int slots;
-	private List<ItemStack> output;
-	private NodeType type;
-	private List<UUID> workers;
+import io.github.kingvictoria.Configs.ConfigRegion.ConfigNode;
 
-	public Node(String name, int slots, NodeType type, List<ItemStack> output, List<UUID> workers) {
+public class Node {
+	/** Replaced by {@link #getName()} and {@link #setName(String)} */
+	@Deprecated
+	public String name;
+	/** Replaced by {@link #getSlots()} and {@link #setSlots(int)} */
+	@Deprecated
+	public int slots;
+	/** Replaced by {@link #getOutput()} and {@link #setOutput(List)} */
+	@Deprecated
+	public List<ItemStack> output;
+	/** Replaced by {@link #getType()} and {@link #setType(NodeType)} */
+	@Deprecated
+	public NodeType type;
+	/** Replaced by {@link #getWorkers()} and {@link #setWorkers(List)}. Alternatively use {@link #addWorker(Player)} */
+	@Deprecated
+	public List<UUID> workers;
+	private ConfigNode config;
+
+	public Node(String name, int slots, NodeType type, List<ItemStack> output, List<UUID> workers, ConfigNode config) {
 		this.name = name;
 		this.slots = slots;
 		this.output = output;
 		this.type = type;
 		this.workers = workers;
+		this.config = config;
 	}
 
 	public boolean addWorker(Player p) {
-		// TODO: Configs
-
 		if (workers.size() < slots) {
 			workers.add(p.getUniqueId());
+			config.setWorkers(workers).save();
 			return true;
 		} else {
 			return false;
@@ -64,26 +77,26 @@ public class Node {
 
 	public void setName(String name) {
 		this.name = name;
-		// TODO: Configs
+		config.setName(name).save();
 	}
 
 	public void setSlots(int slots) {
 		this.slots = slots;
-		// TODO: Configs
+		config.setSlots(slots).save();
 	}
 
 	public void setOutput(List<ItemStack> output) {
 		this.output = output;
-		// TODO: Configss
+		config.setOutput(output).save();
 	}
 
 	public void setType(NodeType type) {
 		this.type = type;
-		// TODO: Configs
+		config.setType(type).save();
 	}
 
 	public void setWorkers(List<UUID> workers) {
 		this.workers = workers;
-		// TODO: Configs
+		config.setWorkers(workers).save();
 	}
 }

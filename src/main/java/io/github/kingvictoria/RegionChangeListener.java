@@ -21,11 +21,13 @@ public class RegionChangeListener implements Listener {
         Region from = NobilityRegions.getRegionManager().getRegionByLocation(event.getFrom());
         Region to = NobilityRegions.getRegionManager().getRegionByLocation(event.getTo());
 
-        if (!from.equals(to)) {
+        if (to == null) return;
+
+        if ((from == null && to != null) || !from.equals(to)) {
             player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new ComponentBuilder("You have entered ")
                     .color(ChatColor.YELLOW).append(to.getName()).color(ChatColor.GREEN).bold(true).create());
 
-            if (from.isHabitable() != to.isHabitable()) {
+            if (from == null || (from.isHabitable() != to.isHabitable())) {
                 if (to.isHabitable()) {
                     player.sendTitle("", ChatColor.GREEN + "You have left the wilderness", 10, 70, 20);
                 } else {

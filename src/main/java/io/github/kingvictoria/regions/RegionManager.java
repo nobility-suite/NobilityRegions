@@ -1,25 +1,31 @@
 package io.github.kingvictoria.regions;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.Biome;
-import org.bukkit.configuration.Configuration;
 
 import io.github.kingvictoria.Configs;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class RegionManager {
 
     private List<Region> regions;
 
-    public RegionManager(Configuration config, List<World> worlds) {
-        regions = new ArrayList<>();
+    public RegionManager() {
+        regions = Configs.loadRegions();
+    }
 
-        for (World world : worlds) {
-            for (Biome biome : Biome.values()) {
-                regions.add(Configs.region(world, biome).load());
+    /**
+     * Generates a Region for every Biome in a World (if they don't already exist)
+     * 
+     * @param world World to generate Regions for
+     */
+    public void generateRegions(World world) {
+        for (Biome biome : Biome.values()) {
+            if (getRegion(world, biome) == null) {
+                regions.add(Configs.generateConfigRegion(world, biome).make());
             }
         }
     }
@@ -51,8 +57,8 @@ public class RegionManager {
         for (Region region : regions) {
             if (region.getBiome() == biome && region.getWorld().equals(world)) {
                 return region;
-            } // if
-        } // for
+            }
+        }
 
         return null;
     }
@@ -67,8 +73,8 @@ public class RegionManager {
         for (Region region : regions) {
             if (name.equalsIgnoreCase(region.getName())) {
                 return region;
-            } // if
-        } // for
+            }
+        }
 
         return null;
     }
@@ -89,7 +95,7 @@ public class RegionManager {
         }
 
         return null;
-    } // getRegionByLocation
+    }
 
     /**
      * Retrieves a list of all regions
