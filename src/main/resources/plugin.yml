@@ -1,5 +1,5 @@
 name: NobilityRegions
-version: 0.9
+version: ${project.version}
 main: io.github.kingvictoria.NobilityRegions
 depend: [NobilityItems]
 api-version: 1.14
