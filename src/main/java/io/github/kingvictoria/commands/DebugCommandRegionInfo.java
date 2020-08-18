@@ -8,11 +8,11 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 
 import io.github.kingvictoria.NobilityRegions;
 import io.github.kingvictoria.regions.Region;
 import io.github.kingvictoria.regions.nodes.Node;
+import net.civex4.nobilityitems.NobilityItem;
 
 public class DebugCommandRegionInfo implements CommandExecutor {
 
@@ -52,19 +52,13 @@ public class DebugCommandRegionInfo implements CommandExecutor {
                 commandSender.sendMessage(ChatColor.YELLOW + " Slots: " + ChatColor.BLUE + "" + node.getSlots());
                 commandSender.sendMessage(ChatColor.YELLOW + " Type:  " + ChatColor.BLUE + node.getType().toString());
                 commandSender.sendMessage(ChatColor.YELLOW + " Output: ");
-                for (ItemStack item : node.getOutput()) {
+                for (NobilityItem item : node.getOutput()) {
                     if (item == null) {
                         commandSender.sendMessage(ChatColor.RED + " - ERROR!!");
                         continue;
                     }
 
-                    if (item.hasItemMeta()) {
-                        commandSender.sendMessage(
-                                ChatColor.BLUE + " - " + item.getAmount() + ", " + item.getItemMeta().getDisplayName());
-                    } else {
-                        commandSender.sendMessage(
-                                ChatColor.BLUE + " - " + item.getAmount() + ", " + item.getType().toString());
-                    }
+                    commandSender.sendMessage(ChatColor.BLUE + " - " + item.getInternalName());
                 }
 
                 if (node.getWorkers().size() > 0) {

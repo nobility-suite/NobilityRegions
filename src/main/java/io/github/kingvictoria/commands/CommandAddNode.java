@@ -2,18 +2,18 @@ package io.github.kingvictoria.commands;
 
 import io.github.kingvictoria.NobilityRegions;
 import io.github.kingvictoria.regions.nodes.NodeType;
+import net.civex4.nobilityitems.NobilityItem;
+import net.civex4.nobilityitems.NobilityItems;
 import io.github.kingvictoria.regions.Region;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import org.bukkit.ChatColor;
-import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 
 public class CommandAddNode implements CommandExecutor {
 
@@ -45,8 +45,8 @@ public class CommandAddNode implements CommandExecutor {
             String temp2 = args[2];
             int slots = Integer.parseInt(temp);
             NodeType type = NodeType.valueOf(temp2);
-            List<ItemStack> output = new ArrayList<>();
-            output.add(new ItemStack(Material.STONE));
+            List<NobilityItem> output = new ArrayList<>();
+            output.add(NobilityItems.getItemByName("nr-stone"));
 
             region.makeNode(name, name, slots, type, output);
             commandSender.sendMessage(ChatColor.YELLOW + "Added Node to " + ChatColor.BLUE + "" + ChatColor.BOLD

@@ -4,12 +4,12 @@ import java.util.List;
 
 import org.bukkit.World;
 import org.bukkit.block.Biome;
-import org.bukkit.inventory.ItemStack;
 
 import io.github.kingvictoria.NobilityRegions;
 import io.github.kingvictoria.Configs.ConfigRegion;
 import io.github.kingvictoria.regions.nodes.Node;
 import io.github.kingvictoria.regions.nodes.NodeType;
+import net.civex4.nobilityitems.NobilityItem;
 
 /**
  * A unique, World-Biome combination
@@ -42,7 +42,7 @@ public class Region {
         this.config = config;
     }
 
-    public void makeNode(String id, String name, int slots, NodeType type, List<ItemStack> output) {
+    public void makeNode(String id, String name, int slots, NodeType type, List<NobilityItem> output) {
         Node node = config.makeNode(id).setName(name).setSlots(slots).setType(type).setOutput(output).make();
 
         if (node != null)

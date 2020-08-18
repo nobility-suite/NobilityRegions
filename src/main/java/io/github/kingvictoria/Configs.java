@@ -6,7 +6,6 @@ import org.bukkit.block.Biome;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.inventory.ItemStack;
 
 import io.github.kingvictoria.regions.Region;
 import io.github.kingvictoria.regions.nodes.Node;
@@ -19,6 +18,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+
+import net.civex4.nobilityitems.NobilityItem;
+import net.civex4.nobilityitems.NobilityItems;
 
 public class Configs {
 
@@ -99,7 +101,7 @@ public class Configs {
                 String name = null;
                 int slots = 0;
                 NodeType type = null;
-                List<ItemStack> output = new ArrayList<>();
+                List<NobilityItem> output = new ArrayList<>();
                 List<UUID> workers = new ArrayList<>();
 
                 boolean returnNull = false;
@@ -126,11 +128,15 @@ public class Configs {
                 }
 
                 if (config.isList("output")) {
-                    output = (List<ItemStack>) config.getList("output");
+                    List<String> stringOutput = config.getStringList("output");
 
-                    if (output.contains(null)) {
-                        Bukkit.getLogger().severe("Unable to load output for " + config.getCurrentPath());
-                        returnNull = true;
+                    for (String string: stringOutput) {
+                        try {
+                            output.add(NobilityItems.getItemByName(string));
+                        } catch (IllegalArgumentException e) {
+                            Bukkit.getLogger().severe("Invalid NobilityItem " + string + " in " + config.getCurrentPath());
+                            returnNull = true;
+                        }
                     }
                 } else {
                     Bukkit.getLogger().warning("Node " + config.getCurrentPath() + " has no output!");
@@ -171,8 +177,12 @@ public class Configs {
                 return this;
             }
 
-            public ConfigNode setOutput(List<ItemStack> output) {
-                changes.put("output", output);
+            public ConfigNode setOutput(List<NobilityItem> output) {
+                List<String> stringOutput = new ArrayList<>();
+                for (NobilityItem item : output) {
+                    stringOutput.add(item.getInternalName());
+                }
+                changes.put("output", stringOutput);
                 return this;
             }
 

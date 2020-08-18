@@ -5,29 +5,19 @@ import java.util.List;
 import java.util.UUID;
 
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 
 import io.github.kingvictoria.Configs.ConfigRegion.ConfigNode;
+import net.civex4.nobilityitems.NobilityItem;
 
 public class Node {
-	/** Replaced by {@link #getName()} and {@link #setName(String)} */
-	@Deprecated
-	public String name;
-	/** Replaced by {@link #getSlots()} and {@link #setSlots(int)} */
-	@Deprecated
-	public int slots;
-	/** Replaced by {@link #getOutput()} and {@link #setOutput(List)} */
-	@Deprecated
-	public List<ItemStack> output;
-	/** Replaced by {@link #getType()} and {@link #setType(NodeType)} */
-	@Deprecated
-	public NodeType type;
-	/** Replaced by {@link #getWorkers()} and {@link #setWorkers(List)}. Alternatively use {@link #addWorker(Player)} */
-	@Deprecated
-	public List<UUID> workers;
+	private String name;
+	private int slots;
+	private List<NobilityItem> output;
+	private NodeType type;
+	private List<UUID> workers;
 	private ConfigNode config;
 
-	public Node(String name, int slots, NodeType type, List<ItemStack> output, List<UUID> workers, ConfigNode config) {
+	public Node(String name, int slots, NodeType type, List<NobilityItem> output, List<UUID> workers, ConfigNode config) {
 		this.name = name;
 		this.slots = slots;
 		this.output = output;
@@ -63,7 +53,7 @@ public class Node {
 		return slots;
 	}
 
-	public List<ItemStack> getOutput() {
+	public List<NobilityItem> getOutput() {
 		return output;
 	}
 
@@ -85,7 +75,7 @@ public class Node {
 		config.setSlots(slots).save();
 	}
 
-	public void setOutput(List<ItemStack> output) {
+	public void setOutput(List<NobilityItem> output) {
 		this.output = output;
 		config.setOutput(output).save();
 	}

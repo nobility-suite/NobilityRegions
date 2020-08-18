@@ -8,37 +8,19 @@ world:
         slots: 3
         type: MINE
         output:
-          - ==: org.bukkit.inventory.ItemStack
-            v: 1976
-            type: IRON_ORE
-            amount: 25
-          - ==: org.bukkit.inventory.ItemStack
-            v: 1976
-            type: STONE
-            amount: 60
+          - nr-iron_ore
+          - nr-stone
       The_Weeping_Willows:
         name: "The Weeping Willows"
         slots: 2
         type: FOREST
         output:
-          - ==: org.bukkit.inventory.ItemStack
-            v: 1976
-            type: DARK_OAK_LOG
-            amount: 30
-          - ==: org.bukkit.inventory.ItemStack
-            v: 1976
-            type: DARK_OAK_PLANKS
-            amount: 50
+          - nr-dark_oak
+          - nr-dark_oak_planks
       Verdant_Valley:
         name: "Verdant Valley"
         slots: 5
         type: FARM
         output:
-          - ==: org.bukkit.inventory.ItemStack
-            v: 1976
-            type: CARROT
-            amount: 50
-          - ==: org.bukkit.inventory.ItemStack
-            v: 1976
-            type: HAY_BLOCK
-            amount: 10
+          - nr-carrot
+          - nr-wheat
