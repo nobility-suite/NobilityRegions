@@ -1,6 +1,7 @@
 package io.github.kingvictoria.regions;
 
 import java.util.List;
+import java.util.Map;
 
 import org.bukkit.World;
 import org.bukkit.block.Biome;
@@ -42,7 +43,7 @@ public class Region {
         this.config = config;
     }
 
-    public void makeNode(String id, String name, int slots, NodeType type, List<NobilityItem> output) {
+    public void makeNode(String id, String name, int slots, NodeType type, Map<NobilityItem, Integer> output) {
         Node node = config.makeNode(id).setName(name).setSlots(slots).setType(type).setOutput(output).make();
 
         if (node != null)

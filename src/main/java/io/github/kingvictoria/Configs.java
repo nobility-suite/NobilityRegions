@@ -101,7 +101,7 @@ public class Configs {
                 String name = null;
                 int slots = 0;
                 NodeType type = null;
-                List<NobilityItem> output = new ArrayList<>();
+                Map<NobilityItem, Integer> output = null;
                 List<UUID> workers = new ArrayList<>();
 
                 boolean returnNull = false;
@@ -127,17 +127,26 @@ public class Configs {
                     returnNull = true;
                 }
 
-                if (config.isList("output")) {
-                    List<String> stringOutput = config.getStringList("output");
+                if (config.isConfigurationSection("output")) {
+                    ConfigurationSection outputConfig = config.getConfigurationSection("output");
+                    output = new HashMap<>();
 
-                    for (String string: stringOutput) {
+                    for (String outputItem : outputConfig.getKeys(false)) {
+                        if (!outputConfig.isInt(outputItem)) {
+                            Bukkit.getLogger().severe(outputItem + " in " + outputConfig.getCurrentPath() + " is not an integer!");
+                            returnNull = true;
+                            continue;
+                        }
+
                         try {
-                            output.add(NobilityItems.getItemByName(string));
+                            output.put(NobilityItems.getItemByName(outputItem), outputConfig.getInt(outputItem));
                         } catch (IllegalArgumentException e) {
-                            Bukkit.getLogger().severe("Invalid NobilityItem " + string + " in " + config.getCurrentPath());
+                            Bukkit.getLogger().severe("Invalid NobilityItem " + outputItem + " in " + config.getCurrentPath());
                             returnNull = true;
                         }
                     }
+
+                    
                 } else {
                     Bukkit.getLogger().warning("Node " + config.getCurrentPath() + " has no output!");
                     returnNull = true;
@@ -177,12 +186,10 @@ public class Configs {
                 return this;
             }
 
-            public ConfigNode setOutput(List<NobilityItem> output) {
-                List<String> stringOutput = new ArrayList<>();
-                for (NobilityItem item : output) {
-                    stringOutput.add(item.getInternalName());
+            public ConfigNode setOutput(Map<NobilityItem, Integer> output) {
+                for (NobilityItem item : output.keySet()) {
+                    changes.put("output." + item.getInternalName(), output.get(item));
                 }
-                changes.put("output", stringOutput);
                 return this;
             }
 

@@ -8,19 +8,19 @@ world:
         slots: 3
         type: MINE
         output:
-          - nr-iron_ore
-          - nr-stone
+          nr-iron_ore: 25
+          nr-stone: 60
       The_Weeping_Willows:
         name: "The Weeping Willows"
         slots: 2
         type: FOREST
         output:
-          - nr-dark_oak
-          - nr-dark_oak_planks
+          nr-dark_oak: 30
+          nr-dark_oak_planks: 50
       Verdant_Valley:
         name: "Verdant Valley"
         slots: 5
         type: FARM
         output:
-          - nr-carrot
-          - nr-wheat
+          nr-carrot: 50
+          nr-wheat: 10

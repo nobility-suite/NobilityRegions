@@ -6,8 +6,8 @@ import net.civex4.nobilityitems.NobilityItem;
 import net.civex4.nobilityitems.NobilityItems;
 import io.github.kingvictoria.regions.Region;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -45,8 +45,8 @@ public class CommandAddNode implements CommandExecutor {
             String temp2 = args[2];
             int slots = Integer.parseInt(temp);
             NodeType type = NodeType.valueOf(temp2);
-            List<NobilityItem> output = new ArrayList<>();
-            output.add(NobilityItems.getItemByName("nr-stone"));
+            Map<NobilityItem, Integer> output = new HashMap<>();
+            output.put(NobilityItems.getItemByName("nr-stone"), 1);
 
             region.makeNode(name, name, slots, type, output);
             commandSender.sendMessage(ChatColor.YELLOW + "Added Node to " + ChatColor.BLUE + "" + ChatColor.BOLD

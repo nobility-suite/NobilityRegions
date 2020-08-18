@@ -2,6 +2,7 @@ package io.github.kingvictoria.regions.nodes;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import org.bukkit.entity.Player;
@@ -12,12 +13,12 @@ import net.civex4.nobilityitems.NobilityItem;
 public class Node {
 	private String name;
 	private int slots;
-	private List<NobilityItem> output;
+	private Map<NobilityItem, Integer> output;
 	private NodeType type;
 	private List<UUID> workers;
 	private ConfigNode config;
 
-	public Node(String name, int slots, NodeType type, List<NobilityItem> output, List<UUID> workers, ConfigNode config) {
+	public Node(String name, int slots, NodeType type, Map<NobilityItem, Integer> output, List<UUID> workers, ConfigNode config) {
 		this.name = name;
 		this.slots = slots;
 		this.output = output;
@@ -53,7 +54,7 @@ public class Node {
 		return slots;
 	}
 
-	public List<NobilityItem> getOutput() {
+	public Map<NobilityItem, Integer> getOutput() {
 		return output;
 	}
 
@@ -75,7 +76,7 @@ public class Node {
 		config.setSlots(slots).save();
 	}
 
-	public void setOutput(List<NobilityItem> output) {
+	public void setOutput(Map<NobilityItem, Integer> output) {
 		this.output = output;
 		config.setOutput(output).save();
 	}

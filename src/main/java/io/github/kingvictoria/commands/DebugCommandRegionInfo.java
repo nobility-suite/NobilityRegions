@@ -52,13 +52,13 @@ public class DebugCommandRegionInfo implements CommandExecutor {
                 commandSender.sendMessage(ChatColor.YELLOW + " Slots: " + ChatColor.BLUE + "" + node.getSlots());
                 commandSender.sendMessage(ChatColor.YELLOW + " Type:  " + ChatColor.BLUE + node.getType().toString());
                 commandSender.sendMessage(ChatColor.YELLOW + " Output: ");
-                for (NobilityItem item : node.getOutput()) {
+                for (NobilityItem item : node.getOutput().keySet()) {
                     if (item == null) {
                         commandSender.sendMessage(ChatColor.RED + " - ERROR!!");
                         continue;
                     }
 
-                    commandSender.sendMessage(ChatColor.BLUE + " - " + item.getInternalName());
+                    commandSender.sendMessage(ChatColor.BLUE + " - " + node.getOutput().get(item) + "x " + item.getInternalName());
                 }
 
                 if (node.getWorkers().size() > 0) {
