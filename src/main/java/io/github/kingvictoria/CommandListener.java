@@ -1,6 +1,8 @@
 package io.github.kingvictoria;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -26,9 +28,8 @@ public class CommandListener implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        String pluginName = ChatColor.DARK_GREEN + "" 
-            + ChatColor.BOLD + "[" + NobilityRegions.getInstance().getName() 
-            + " " + NobilityRegions.getInstance().getDescription().getVersion() + "]";
+        String pluginName = ChatColor.DARK_GREEN + "" + ChatColor.BOLD + "[" + NobilityRegions.getInstance().getName()
+                + " " + NobilityRegions.getInstance().getDescription().getVersion() + "]";
 
         Player player = null;
         if (sender instanceof Player) {
@@ -37,25 +38,26 @@ public class CommandListener implements CommandExecutor {
 
         if (args.length == 0) {
             sender.sendMessage(ChatColor.GREEN + "=== " + pluginName + ChatColor.GREEN + " ===");
-            sender.sendMessage(ChatColor.YELLOW + "/nr " 
-                + ChatColor.GREEN + "NobilityRegions help");
-            sender.sendMessage(ChatColor.YELLOW + "/nr list (search term) " 
-                + ChatColor.GREEN + "Lists all regions, optional search");
-            sender.sendMessage(ChatColor.YELLOW + "/nr info (region name) " 
-                + ChatColor.GREEN + "Gets info on a region, defaults to the region you're in");
-            
+            sender.sendMessage(ChatColor.YELLOW + "/nr " + ChatColor.GREEN + "NobilityRegions help");
+            sender.sendMessage(ChatColor.YELLOW + "/nr list (search term) " + ChatColor.GREEN
+                    + "Lists all regions, optional search");
+            sender.sendMessage(ChatColor.YELLOW + "/nr info (region name) " + ChatColor.GREEN
+                    + "Gets info on a region, defaults to the region you're in");
+
             if (sender.isOp()) {
-                sender.sendMessage(ChatColor.AQUA + "---" + ChatColor.DARK_AQUA + "Admin Commands" + ChatColor.AQUA + "---");
-                sender.sendMessage(ChatColor.GOLD + "/nr generate (world name) " 
-                    + ChatColor.DARK_GREEN + "Generates regions for a world, defaults to the world you're in");
-                sender.sendMessage(ChatColor.GOLD + "/nr set name (-r <region name> -n) <new name> " 
-                    + ChatColor.DARK_GREEN + "Sets the name of a region, defaults to the region you're in");
-                sender.sendMessage(ChatColor.GOLD + "/nr set habitability <true|false> (region name)" 
-                    + ChatColor.DARK_GREEN + "Sets the habitability of a region, defaults to the region you're in");
-                sender.sendMessage(ChatColor.GOLD + "/nr add node -i <id> -n <name> -s <slots> -t <type> [-o <output item> <amount>...] (-r <region>) " 
-                    + ChatColor.DARK_GREEN + "Adds a node to a region, defaults to the region you're in");
+                sender.sendMessage(
+                        ChatColor.AQUA + "---" + ChatColor.DARK_AQUA + "Admin Commands" + ChatColor.AQUA + "---");
+                sender.sendMessage(ChatColor.GOLD + "/nr generate (world name) " + ChatColor.DARK_GREEN
+                        + "Generates regions for a world, defaults to the world you're in");
+                sender.sendMessage(ChatColor.GOLD + "/nr set name (-r <region name> -n) <new name> "
+                        + ChatColor.DARK_GREEN + "Sets the name of a region, defaults to the region you're in");
+                sender.sendMessage(ChatColor.GOLD + "/nr set habitability <true|false> (region name)"
+                        + ChatColor.DARK_GREEN + "Sets the habitability of a region, defaults to the region you're in");
+                sender.sendMessage(ChatColor.GOLD
+                        + "/nr add node -i <id> -n <name> -s <slots> -t <type> [-o <output item> <amount>...] (-r <region>) "
+                        + ChatColor.DARK_GREEN + "Adds a node to a region, defaults to the region you're in");
             }
-            
+
             return true;
         } else if (args[0].equals("list")) {
             if (args.length == 1) {
@@ -63,7 +65,8 @@ public class CommandListener implements CommandExecutor {
 
                 for (Region region : NobilityRegions.getRegionManager().getRegions()) {
                     TextComponent component = new TextComponent(ChatColor.BLUE + region.getName());
-                    component.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/nr info " + region.getName()));
+                    component.setClickEvent(
+                            new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/nr info " + region.getName()));
                     sender.spigot().sendMessage(component);
                 }
 
@@ -74,13 +77,14 @@ public class CommandListener implements CommandExecutor {
                     search += " " + args[i];
                 }
 
-                sender.sendMessage(ChatColor.GREEN + "=== Regions Matching: '" 
-                    + ChatColor.GREEN + search + ChatColor.GREEN + "' ===");
-                
+                sender.sendMessage(ChatColor.GREEN + "=== Regions Matching: '" + ChatColor.GREEN + search
+                        + ChatColor.GREEN + "' ===");
+
                 for (Region region : NobilityRegions.getRegionManager().getRegions()) {
                     if (region.getName().toLowerCase().contains(search.toLowerCase())) {
                         TextComponent component = new TextComponent(ChatColor.BLUE + region.getName());
-                        component.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/nr info " + region.getName()));
+                        component.setClickEvent(
+                                new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/nr info " + region.getName()));
                         sender.spigot().sendMessage(component);
                     }
                 }
@@ -136,10 +140,12 @@ public class CommandListener implements CommandExecutor {
                             continue;
                         }
 
-                        TextComponent component = new TextComponent(ChatColor.BLUE + " - " + node.getOutput().get(item) + "x ");
+                        TextComponent component = new TextComponent(
+                                ChatColor.BLUE + " - " + node.getOutput().get(item) + "x ");
                         TextComponent displayName = new TextComponent(item.getDisplayName());
                         if (sender.isOp()) {
-                            displayName.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/ni get " + item.getInternalName()));
+                            displayName.setClickEvent(
+                                    new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/ni get " + item.getInternalName()));
                         }
                         if (item.hasLore()) {
                             BaseComponent[] loreText = new BaseComponent[item.getLore().size()];
@@ -150,7 +156,7 @@ public class CommandListener implements CommandExecutor {
                                     loreText[i] = new TextComponent(item.getLore().get(i) + "\n");
                                 }
                             }
-                            
+
                             displayName.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, loreText));
                         }
                         component.addExtra(displayName);
@@ -176,14 +182,14 @@ public class CommandListener implements CommandExecutor {
                 sender.sendMessage(ChatColor.RED + "Usage of this command is restricted");
                 return true;
             }
-    
+
             if (args.length == 1 && player == null) {
                 sender.sendMessage(ChatColor.RED + "You must specify the world to use this command from the console");
                 return true;
             }
-    
+
             World world;
-    
+
             if (player != null && args.length == 1) {
                 world = player.getWorld();
             } else {
@@ -198,11 +204,11 @@ public class CommandListener implements CommandExecutor {
                     return true;
                 }
             }
-    
+
             sender.sendMessage(ChatColor.YELLOW + "Generating Regions...");
             NobilityRegions.getRegionManager().generateRegions(world);
             sender.sendMessage(ChatColor.YELLOW + "Regions Generated!");
-    
+
             return true;
         } else if (args[0].equals("set")) {
             if (!sender.isOp()) {
@@ -257,10 +263,10 @@ public class CommandListener implements CommandExecutor {
                         newName += " " + args[i];
                     }
 
-                    if(!region.setName(newName)) {
-                        sender.sendMessage(ChatColor.BLUE + region.getName() 
-                            + ChatColor.RED + " could not have its name set to " + ChatColor.BLUE + newName 
-                            + ChatColor.RED + "! Is it already used?");
+                    if (!region.setName(newName)) {
+                        sender.sendMessage(
+                                ChatColor.BLUE + region.getName() + ChatColor.RED + " could not have its name set to "
+                                        + ChatColor.BLUE + newName + ChatColor.RED + "! Is it already used?");
                     } else {
                         sender.sendMessage(ChatColor.YELLOW + "Region name set to " + ChatColor.BLUE + newName);
                     }
@@ -284,17 +290,16 @@ public class CommandListener implements CommandExecutor {
                         newName += " " + args[i];
                     }
 
-                    if(!region.setName(newName)) {
-                        sender.sendMessage(ChatColor.BLUE + region.getName() 
-                            + ChatColor.RED + " could not have its name set to " + ChatColor.BLUE + newName 
-                            + ChatColor.RED + "! Is it already used?");
+                    if (!region.setName(newName)) {
+                        sender.sendMessage(
+                                ChatColor.BLUE + region.getName() + ChatColor.RED + " could not have its name set to "
+                                        + ChatColor.BLUE + newName + ChatColor.RED + "! Is it already used?");
                     } else {
                         sender.sendMessage(ChatColor.YELLOW + "Region name set to " + ChatColor.BLUE + newName);
                     }
 
                     return true;
                 }
-
 
             } else if (args[1].equals("habitability")) {
                 if (args.length == 2 || (!args[2].equals("true") && !args[2].equals("false"))) {
@@ -318,7 +323,7 @@ public class CommandListener implements CommandExecutor {
 
                     region.setHabitable(args[2].equals("true"));
                     sender.sendMessage(ChatColor.YELLOW + "Habitability of " + ChatColor.BLUE + region.getName()
-                        + ChatColor.YELLOW + " set to " + ChatColor.GREEN + "" + args[2].equals("true"));
+                            + ChatColor.YELLOW + " set to " + ChatColor.GREEN + "" + args[2].equals("true"));
                     return true;
                 } else {
                     boolean habitability = args[2].equals("true");
@@ -337,7 +342,7 @@ public class CommandListener implements CommandExecutor {
 
                     region.setHabitable(habitability);
                     sender.sendMessage(ChatColor.YELLOW + "Habitability of " + ChatColor.BLUE + region.getName()
-                        + ChatColor.YELLOW + " set to " + ChatColor.GREEN + "" + habitability);
+                            + ChatColor.YELLOW + " set to " + ChatColor.GREEN + "" + habitability);
                     return true;
                 }
             }
@@ -354,100 +359,164 @@ public class CommandListener implements CommandExecutor {
 
             if (args.length == 1) {
                 sender.sendMessage(ChatColor.RED + "Usage:");
-                sender.sendMessage(ChatColor.RED + "/nr add node -i <id> -n <name> -s <slots> -t <type> [-o <output item> <amount>...] (-r <region>)"); 
+                sender.sendMessage(ChatColor.RED
+                        + "/nr add node -i <id> -n <name> -s <slots> -t <type> [-o <output item> <amount>...] (-r <region>)");
                 return true;
             }
 
             if (args[1].equals("node")) {
-                if (args.length < 13 || !args[2].equals("-i")) {
-                    sender.sendMessage(ChatColor.RED 
-                        + "Usage: /nr add node -i <id> -n <name> -s <slots> -t <type> [-o <output item> <amount>...] (-r <region>)"); 
+                if (args.length < 13) {
+                    sender.sendMessage(ChatColor.RED
+                            + "Usage: /nr add node -i <id> -n <name> -s <slots> -t <type> [-o <output item> <amount>...] (-r <region>)");
                     return true;
                 }
 
-                String id = args[3];
-
-                if (!args[4].equals("-n")) {
-                    sender.sendMessage(ChatColor.RED 
-                        + "Usage: /nr add node -i <id> -n <name> -s <slots> -t <type> [-o <output item> <amount>...] (-r <region>)"); 
-                    return true;
-                }
-
-                String name = args[5];
-                int index = -1;
-                for (int i = 6; i < args.length; i++) {
-                    if (args[i].equals("-s")) {
-                        index = i + 1;
-                        break;
-                    }
-
-                    name += " " + args[i];
-                }
-
-                if (index == -1 || args.length < index + 6) {
-                    sender.sendMessage(ChatColor.RED 
-                        + "Usage: /nr add node -i <id> -n <name> -s <slots> -t <type> [-o <output item> <amount>...] (-r <region>)"); 
-                    return true;
-                }
-
+                String id = null;
+                String name = null;
                 int slots = -1;
-
-                try {
-                    slots = Integer.parseInt(args[index]);
-                } catch (NumberFormatException e) {
-                    sender.sendMessage(ChatColor.RED + args[index] + " is not a number!"); 
-                    return true;
-                }
-
-                if (!args[index + 1].equals("-t")) {
-                    sender.sendMessage(ChatColor.RED 
-                        + "Usage: /nr add node -i <id> -n <name> -s <slots> -t <type> [-o <output item> <amount>...] (-r <region>)"); 
-                    return true;
-                }
-
-                index += 2;
-
                 NodeType type = null;
+                Map<NobilityItem, Integer> output = null;
+                Region region = null;
 
-                try {
-                    type = NodeType.valueOf(args[index]);
-                } catch (IllegalArgumentException e) {
-                    sender.sendMessage(ChatColor.RED + args[index] + " is not a valid NodeType!"); 
+                int index = 2;
+                while (index < args.length) {
+                    switch (args[index]) {
+                        case "-i":
+                            if (index + 1 >= args.length) {
+                                sender.sendMessage(ChatColor.RED + "Usage: /nr add node -i <id> -n <name> -s <slots> -t <type> [-o <output item> <amount>...] (-r <region>)");
+                                return true;
+                            }
+
+                            id = args[index + 1];
+
+                            index += 2;
+                            break;
+
+                        case "-n":
+                            if (index + 1 >= args.length) {
+                                sender.sendMessage(ChatColor.RED + "Usage: /nr add node -i <id> -n <name> -s <slots> -t <type> [-o <output item> <amount>...] (-r <region>)");
+                                return true;
+                            }
+
+                            name = args[index + 1];
+                            for (int i = index + 2; i < args.length; i++) {
+                                if (args[i].charAt(0) == '-') {
+                                    index = i;
+                                    break;
+                                }
+            
+                                name += " " + args[i];
+
+                                if (i + 1 >= args.length) {
+                                    index = i + 1;
+                                }
+                            }
+
+                            break;
+
+                        case "-s":
+                            if (index + 1 >= args.length) {
+                                sender.sendMessage(ChatColor.RED + "Usage: /nr add node -i <id> -n <name> -s <slots> -t <type> [-o <output item> <amount>...] (-r <region>)");
+                                return true;
+                            }
+
+                            try {
+                                slots = Integer.parseInt(args[index + 1]);
+                            } catch (NumberFormatException e) {
+                                sender.sendMessage(ChatColor.RED + args[index + 1] + " is not a number!");
+                                return true;
+                            }
+
+                            index += 2;
+                            break;
+
+                        case "-t":
+                            if (index + 1 >= args.length) {
+                                sender.sendMessage(ChatColor.RED + "Usage: /nr add node -i <id> -n <name> -s <slots> -t <type> [-o <output item> <amount>...] (-r <region>)");
+                                return true;
+                            }
+
+                            try {
+                                type = NodeType.valueOf(args[index + 1]);
+                            } catch (IllegalArgumentException e) {
+                                sender.sendMessage(ChatColor.RED + args[index + 1] + " is not a valid NodeType!");
+                                return true;
+                            }
+
+                            index += 2;
+                            break;
+
+                        case "-o":
+                            if (index + 2 >= args.length) {
+                                sender.sendMessage(ChatColor.RED + "Usage: /nr add node -i <id> -n <name> -s <slots> -t <type> [-o <output item> <amount>...] (-r <region>)");
+                                return true;
+                            }
+
+                            if (output == null) {
+                                output = new HashMap<>();
+                            }
+
+                            NobilityItem item = null;
+                            int amount = -1;
+                            try {
+                                item = NobilityItems.getItemByName(args[index + 1]);
+                            } catch (IllegalArgumentException e) {
+                                sender.sendMessage(ChatColor.RED + args[index + 1] + " is not a valid NobilityItem!");
+                                return true;
+                            }
+
+                            try {
+                                amount = Integer.valueOf(args[index + 2]);
+                            } catch (NumberFormatException e) {
+                                sender.sendMessage(ChatColor.RED + args[index + 2] + " is not a number!");
+                                return true;
+                            }
+
+                            output.put(item, amount);
+                            index += 3;
+                            break;
+
+                        case "-r":
+                            if (index + 1 >= args.length) {
+                                sender.sendMessage(ChatColor.RED + "Usage: /nr add node -i <id> -n <name> -s <slots> -t <type> [-o <output item> <amount>...] (-r <region>)");
+                                return true;
+                            }
+
+                            String regionName = args[index + 1];
+                            for (int i = index + 2; i < args.length; i++) {
+                                if (args[i].charAt(0) == '-') {
+                                    index = i;
+                                    break;
+                                }
+            
+                                regionName += " " + args[i];
+
+                                if (i + 1 >= args.length) {
+                                    index = i + 1;
+                                }
+                            }
+
+                            region = NobilityRegions.getRegionManager().getRegionByName(regionName);
+
+                            if (region == null) {
+                                sender.sendMessage(ChatColor.BLUE + regionName + ChatColor.YELLOW + " is not a valid region!");
+                                return true;
+                            }
+
+                            break;
+                        default:
+                            sender.sendMessage(ChatColor.GREEN + args[index] + ChatColor.YELLOW + " is not a valid argument!");
+                            sender.sendMessage(ChatColor.RED + "Usage: /nr add node -i <id> -n <name> -s <slots> -t <type> [-o <output item> <amount>...] (-r <region>)");
+                            return true;
+                    }
+                }
+
+                if (id == null || name == null || slots == -1 || type == null || output == null) {
+                    sender.sendMessage(ChatColor.RED + "Usage: /nr add node -i <id> -n <name> -s <slots> -t <type> [-o <output item> <amount>...] (-r <region>)");
                     return true;
                 }
 
-                index += 1;
-                Map<NobilityItem, Integer> output = new HashMap<>();
-
-                while (index + 2 < args.length && !args[index].equals("-r")) {
-                    NobilityItem item = null;
-                    int amount = -1;
-                    try {
-                        item = NobilityItems.getItemByName(args[index + 1]);
-                    } catch (IllegalArgumentException e) {
-                        sender.sendMessage(ChatColor.RED + args[index + 1] + " is not a valid NobilityItem!"); 
-                        return true;
-                    }
-
-                    try {
-                        amount = Integer.valueOf(args[index + 2]);
-                    } catch (NumberFormatException e) {
-                        sender.sendMessage(ChatColor.RED + args[index + 2] + " is not a number!"); 
-                        return true;
-                    }
-
-                    output.put(item, amount);
-                    index += 3;
-                }
-
-                if (index < args.length && !args[index].equals("-r")) {
-                    sender.sendMessage(ChatColor.RED 
-                        + "Usage: /nr add node -i <id> -n <name> -s <slots> -t <type> [-o <output item> <amount>...] (-r <region>)"); 
-                    return true;
-                }
-
-                Region region;
-                if (index >= args.length) {
+                if (region == null) {
                     if (player == null) {
                         sender.sendMessage(ChatColor.RED + "You must specify region from the console!");
                         return true;
@@ -459,32 +528,18 @@ public class CommandListener implements CommandExecutor {
                         sender.sendMessage(ChatColor.RED + "You are not in a region!");
                         return true;
                     }
-
-                    
-                } else {
-                    index++;
-                    String regionName = args[index];
-                    for (int i = index + 1; i < args.length; i++) {
-                        regionName += " " + args[i];
-                    }
-
-                    region = NobilityRegions.getRegionManager().getRegionByName(regionName);
-
-                    if (region == null) {
-                        sender.sendMessage(ChatColor.BLUE + regionName + ChatColor.YELLOW + " is not a valid region!");
-                        return true;
-                    }
                 }
                 
                 region.makeNode(id, name, slots, type, output);
                 sender.sendMessage(ChatColor.YELLOW + "Node " + ChatColor.GREEN + name + ChatColor.YELLOW
-                    + " created in " + ChatColor.BLUE + region.getName());
+                        + " created in " + ChatColor.BLUE + region.getName());
 
                 return true;
             }
 
             sender.sendMessage(ChatColor.RED + "Usage:");
-            sender.sendMessage(ChatColor.RED + "/nr add node -i <id> -n <name> -s <slots> -t <type> [-o <output item> <amount>...] (-r <region>)"); 
+            sender.sendMessage(ChatColor.RED
+                    + "/nr add node -i <id> -n <name> -s <slots> -t <type> [-o <output item> <amount>...] (-r <region>)");
             return true;
         }
 
