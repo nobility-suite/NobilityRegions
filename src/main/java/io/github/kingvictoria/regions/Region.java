@@ -7,6 +7,7 @@ import org.bukkit.World;
 import org.bukkit.block.Biome;
 
 import io.github.kingvictoria.NobilityRegions;
+import io.github.kingvictoria.Configs;
 import io.github.kingvictoria.Configs.ConfigRegion;
 import io.github.kingvictoria.regions.nodes.Node;
 import io.github.kingvictoria.regions.nodes.NodeType;
@@ -24,15 +25,7 @@ public class Region {
     private ConfigRegion config;
 
     /**
-     * Creates a Region from a String name, World, and Biome
-     * 
-     * @param name      The String name of this Region
-     * @param world     The World of this Region
-     * @param biome     The Biome of this Region
-     * @param habitable Whether this region is habitable (true) or wilderness
-     *                  (false)
-     * @param nodes     The list of resource nodes that exist in this region
-     * @param config    ConfigRegion configuration
+     * DON'T USE THIS CONSTRUCTOR! Use {@link Configs#generateRegion(World, Biome)} to generate a Region
      */
     public Region(String name, World world, Biome biome, boolean habitable, List<Node> nodes, ConfigRegion config) {
         this.name = name;
@@ -43,6 +36,15 @@ public class Region {
         this.config = config;
     }
 
+    /**
+     * Makes a Node in this Region
+     * 
+     * @param id String config key of this Node
+     * @param name String name of this Node to display to players
+     * @param slots int number of slots for workers in this Node
+     * @param type NodeType type of Node (used to display in GUIs)
+     * @param output Map of NobilityItem to Integer output of the node (item : amount)
+     */
     public void makeNode(String id, String name, int slots, NodeType type, Map<NobilityItem, Integer> output) {
         Node node = config.makeNode(id).setName(name).setSlots(slots).setType(type).setOutput(output).make();
 

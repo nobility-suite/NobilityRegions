@@ -26,6 +26,7 @@ public class CommandTabCompleter implements TabCompleter {
     static {
         COMMANDS.add("list");
         COMMANDS.add("info");
+        COMMANDS.add("help");
 
         
         ADMIN_COMMANDS.add("list");
@@ -33,10 +34,15 @@ public class CommandTabCompleter implements TabCompleter {
         ADMIN_COMMANDS.add("generate");
         ADMIN_COMMANDS.add("set");
         ADMIN_COMMANDS.add("add");
+        ADMIN_COMMANDS.add("remove");
 
         SET_COMMANDS.add("name");
         SET_COMMANDS.add("habitability");
+        SET_COMMANDS.add("slots");
+        SET_COMMANDS.add("type");
 
+        ADD_COMMANDS.add("output");
+        ADD_COMMANDS.add("worker");
         ADD_COMMANDS.add("node");
 
         BOOLEANS.add("true");
@@ -70,7 +76,7 @@ public class CommandTabCompleter implements TabCompleter {
                 StringUtil.copyPartialMatches(args[1], worldNames, tabs);
             } else if (args[0].equals("set") && sender.isOp()) {
                 StringUtil.copyPartialMatches(args[1], SET_COMMANDS, tabs);
-            } else if (args[0].equals("add") && sender.isOp()) {
+            } else if ((args[0].equals("add") || args[0].equals("remove")) && sender.isOp()) {
                 StringUtil.copyPartialMatches(args[1], ADD_COMMANDS, tabs);
             }
         } else if (args.length == 3) {

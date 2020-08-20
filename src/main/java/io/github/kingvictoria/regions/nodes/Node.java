@@ -7,9 +7,13 @@ import java.util.UUID;
 
 import org.bukkit.entity.Player;
 
+import io.github.kingvictoria.regions.Region;
 import io.github.kingvictoria.Configs.ConfigRegion.ConfigNode;
 import net.civex4.nobilityitems.NobilityItem;
 
+/**
+ * A resource Node in a Region
+ */
 public class Node {
 	private String name;
 	private int slots;
@@ -18,6 +22,9 @@ public class Node {
 	private List<UUID> workers;
 	private ConfigNode config;
 
+	/**
+	 * DON'T USE THIS CONSTRUCTOR! Create a node with {@link Region#makeNode(args...)}
+	 */
 	public Node(String name, int slots, NodeType type, Map<NobilityItem, Integer> output, List<UUID> workers, ConfigNode config) {
 		this.name = name;
 		this.slots = slots;
@@ -27,9 +34,15 @@ public class Node {
 		this.config = config;
 	}
 
-	public boolean addWorker(Player p) {
+	/**
+	 * Adds a worker to this node
+	 * 
+	 * @param player Player to add
+	 * @return false if there aren't enough slots to add a player
+	 */
+	public boolean addWorker(Player player) {
 		if (workers.size() < slots) {
-			workers.add(p.getUniqueId());
+			workers.add(player.getUniqueId());
 			config.setWorkers(workers).save();
 			return true;
 		} else {
@@ -37,6 +50,27 @@ public class Node {
 		}
 	}
 
+	/**
+	 * Removes a worker from this node
+	 * 
+	 * @param player Player to remove
+	 * @return false if the player does not have a worker on this node
+	 */
+	public boolean removeWorker(Player player) {
+		if (workers.contains(player.getUniqueId())) {
+			workers.remove(player.getUniqueId());
+			config.setWorkers(workers).save();
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	/**
+	 * Gets the number of slots currently being used by workers on this node
+	 * 
+	 * @return int number of used slots
+	 */
 	public int getUsedSlots() {
 		if (this.workers == null) {
 			this.workers = new ArrayList<UUID>();
@@ -54,6 +88,12 @@ public class Node {
 		return slots;
 	}
 
+	/**
+	 * Gets the output of this node as a map of NobilityItems and Integers, with the
+	 * corresponding Integer being the amount of the NobilityItem resource
+	 * 
+	 * @return Map of NobilityItem to Integer output
+	 */
 	public Map<NobilityItem, Integer> getOutput() {
 		return output;
 	}
