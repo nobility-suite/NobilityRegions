@@ -48,7 +48,7 @@ public class CommandListener implements CommandExecutor {
                 sender.sendMessage(ChatColor.AQUA + "---" + ChatColor.DARK_AQUA + "Admin Commands" + ChatColor.AQUA + "---");
                 sender.sendMessage(ChatColor.GOLD + "/nr generate (world name) " 
                     + ChatColor.DARK_GREEN + "Generates regions for a world, defaults to the world you're in");
-                sender.sendMessage(ChatColor.GOLD + "/nr set name (<region name> -t) <new name> " 
+                sender.sendMessage(ChatColor.GOLD + "/nr set name (-r <region name> -n) <new name> " 
                     + ChatColor.DARK_GREEN + "Sets the name of a region, defaults to the region you're in");
                 sender.sendMessage(ChatColor.GOLD + "/nr set habitability <true|false> (region name)" 
                     + ChatColor.DARK_GREEN + "Sets the habitability of a region, defaults to the region you're in");
@@ -212,7 +212,7 @@ public class CommandListener implements CommandExecutor {
 
             if (args.length == 1) {
                 sender.sendMessage(ChatColor.RED + "Usage:");
-                sender.sendMessage(ChatColor.RED + "/nr set name (<region name> -t) <new name>");
+                sender.sendMessage(ChatColor.RED + "/nr set name (-r <region name> -n) <new name>");
                 sender.sendMessage(ChatColor.RED + "/nr set habitability <true|false> (region name)");
                 return true;
             }
@@ -343,7 +343,7 @@ public class CommandListener implements CommandExecutor {
             }
 
             sender.sendMessage(ChatColor.RED + "Usage:");
-            sender.sendMessage(ChatColor.RED + "/nr set name (<region name> -t) <new name>");
+            sender.sendMessage(ChatColor.RED + "/nr set name (-r <region name> -n) <new name>");
             sender.sendMessage(ChatColor.RED + "/nr set habitability <true|false> (region name)");
             return true;
         } else if (args[0].equals("add")) {

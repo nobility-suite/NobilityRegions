@@ -25,7 +25,8 @@ public class NobilityRegions extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new RegionChangeListener(), this);
 
         // Register Commands
-        this.getCommand("nobilityregions").setExecutor(new CommandListener());
+        getCommand("nobilityregions").setExecutor(new CommandListener());
+        getCommand("nobilityregions").setTabCompleter(new CommandTabCompleter());
 
         // Initializations
         Configs.init(new File(getDataFolder(), "regions.yml"));
