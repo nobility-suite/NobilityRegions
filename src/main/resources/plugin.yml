@@ -4,29 +4,7 @@ main: io.github.kingvictoria.NobilityRegions
 depend: [NobilityItems]
 api-version: 1.14
 commands:
-  getregion:
-    description: Displays the region you are in
-    usage: /getregion
-    aliases: [nrg]
-  regioninfo:
-    description: Shows information about a specific region
-    usage: /regioninfo ("name of region")
-    aliases: [nri]
-  generateregions:
-    description: Generates regions in the specified world (defaults the the world the player is in)
-    usage: /generateregions (world)
-  setregionname:
-    description: (DEBUG) Set the name of a region (defaults to region you are in)
-    usage: /setregionname ("name of region to change") <"Name to change it to">
-  setregionhabitability:
-    description: Set the habitability of a region (defaults to region you are in)
-    usage: /setregionhabitability ("name of region to change") <true|false>
-  listregions:
-    description: (DEBUG) Lists all of the Regions
-    usage: /listregions ("world name")
-  searchregions:
-    description: (DEBUG) Searches all of the Regions for a matching name
-    usage: /searchregions <"query">
-  addnode:
-    description: (DEBUG) Adds node to player's region.
-    usage: /addnode <name> <#slots> <NodeType>
+  nobilityregions:
+    description: NobilityRegions commands
+    usage: /nobilityregions (argument) ([other stuff...])
+    aliases: [nr]
