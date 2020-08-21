@@ -57,13 +57,9 @@ public class CommandListener implements CommandExecutor {
             } else if (args[1].equals("habitability")) {
                 return setHabitability(sender, args, player);
             } else if (args[1].equals("slots")) {
-                // TODO: Impliment
-                sender.sendMessage(ChatColor.YELLOW + "This command is not yet implimented!");
-                return true;
+                return setSlots(sender, args, player);
             } else if (args[1].equals("type")) {
-                // TODO: Impliment
-                sender.sendMessage(ChatColor.YELLOW + "This command is not yet implimented!");
-                return true;
+                return setType(sender, args, player);
             }
 
             return setUsage(sender);
@@ -76,11 +72,11 @@ public class CommandListener implements CommandExecutor {
             if (args.length == 1) {
                 return addUsage(sender);
             } else if (args[1].equals("output")) {
-                // TODO: Impliment
+                // TODO: Impliment /nr add output [<output item> <amount>...] -n <node> (-r <region>)
                 sender.sendMessage(ChatColor.YELLOW + "This command is not yet implimented!");
                 return true;
             } else if (args[1].equals("worker")) {
-                // TODO: Impliment
+                // TODO: Impliment /nr add worker [<player>...] -n <node> (-r <region>)
                 sender.sendMessage(ChatColor.YELLOW + "This command is not yet implimented!");
                 return true;
             } else if (args[1].equals("node")) {
@@ -97,23 +93,238 @@ public class CommandListener implements CommandExecutor {
             if (args.length == 1) {
                 return removeUsage(sender);
             } else if (args[1].equals("output")) {
-                // TODO: Impliment
+                // TODO: Impliment /nr remove output [<output item>...] -n <node> (-r <region>)
                 sender.sendMessage(ChatColor.YELLOW + "This command is not yet implimented!");
                 return true;
             } else if (args[1].equals("worker")) {
-                // TODO: Impliment
+                // TODO: Impliment /nr remove worker [<player>...] -n <node> (-r <region>)
                 sender.sendMessage(ChatColor.YELLOW + "This command is not yet implimented!");
                 return true;
             } else if (args[1].equals("node")) {
-                // TODO: Impliment
-                sender.sendMessage(ChatColor.YELLOW + "This command is not yet implimented!");
-                return true;
+                return removeNode(sender, args, player);
             }
 
             return removeUsage(sender);
         }
 
         return false;
+    }
+
+    private boolean setType(CommandSender sender, String[] args, Player player) {
+        if (args.length < 5 || !args[3].equals("-n")) {
+            sender.sendMessage(ChatColor.RED + "Usage: /nr set type <NodeType> -n <node> (-r <region>)");
+            return true;
+        }
+
+        NodeType type = null;
+        try {
+            type = NodeType.valueOf(args[2]);
+        } catch (NullPointerException e) {
+            sender.sendMessage(ChatColor.GREEN + args[2] + ChatColor.RED + " is not a valid NodeType!");
+            return true;
+        }
+
+        int index = -1;
+        String nodeName = args[4];
+        for (int i = 5; i < args.length; i++) {
+            if (args[i].equals("-r")) {
+                index = i;
+                break;
+            }
+
+            nodeName += " " + args[i];
+        }
+
+        Region region;
+        if (index == -1) {
+            if (player == null) {
+                sender.sendMessage(ChatColor.RED + "You must specify the region from the console!");
+                return true;
+            }
+
+            region = NobilityRegions.getRegionManager().getRegionByLocation(player.getLocation());
+
+            if (region == null) {
+                sender.sendMessage(ChatColor.RED + "You are not in a region!");
+                return true;
+            }
+        } else {
+            if (index + 1 >= args.length) {
+                sender.sendMessage(ChatColor.RED + "Usage: /nr set slots <number> -n <node> (-r <region>)");
+                return true;
+            }
+
+            String regionName = args[index + 1];
+            for (int i = index + 2; i < args.length; i++) {
+                regionName += " " + args[i];
+            }
+
+            region = NobilityRegions.getRegionManager().getRegionByName(regionName);
+
+            if (region == null) {
+                sender.sendMessage(ChatColor.BLUE + regionName + ChatColor.RED + " is not a valid region!");
+                return true;
+            }
+        }
+
+
+        Node node = null;
+        for (Node n : region.getNodes()) {
+            if (n.getName().equals(nodeName)) {
+                node = n;
+                break;
+            }
+        }
+
+        if (node == null) {
+            sender.sendMessage(ChatColor.RED + "There is no node " + ChatColor.GREEN + nodeName + ChatColor.RED 
+                + " in " + ChatColor.BLUE + region.getName());
+        } else {
+            node.setType(type);
+            sender.sendMessage(ChatColor.YELLOW + "Type of " + ChatColor.GREEN + node.getName() + ChatColor.YELLOW
+                + " set to " + ChatColor.GREEN + "" + type.name());
+        }
+
+        return true;
+    }
+
+    private boolean setSlots(CommandSender sender, String[] args, Player player) {
+        if (args.length < 5 || !args[3].equals("-n")) {
+            sender.sendMessage(ChatColor.RED + "Usage: /nr set slots <number> -n <node> (-r <region>)");
+            return true;
+        }
+
+        int slots;
+        try {
+            slots = Integer.parseInt(args[2]);
+        } catch (NumberFormatException e) {
+            sender.sendMessage(ChatColor.RED + args[2] + " is not a number!");
+            return true;
+        }
+
+        int index = -1;
+        String nodeName = args[4];
+        for (int i = 5; i < args.length; i++) {
+            if (args[i].equals("-r")) {
+                index = i;
+                break;
+            }
+
+            nodeName += " " + args[i];
+        }
+
+        Region region;
+        if (index == -1) {
+            if (player == null) {
+                sender.sendMessage(ChatColor.RED + "You must specify the region from the console!");
+                return true;
+            }
+
+            region = NobilityRegions.getRegionManager().getRegionByLocation(player.getLocation());
+
+            if (region == null) {
+                sender.sendMessage(ChatColor.RED + "You are not in a region!");
+                return true;
+            }
+        } else {
+            if (index + 1 >= args.length) {
+                sender.sendMessage(ChatColor.RED + "Usage: /nr set slots <number> -n <node> (-r <region>)");
+                return true;
+            }
+
+            String regionName = args[index + 1];
+            for (int i = index + 2; i < args.length; i++) {
+                regionName += " " + args[i];
+            }
+
+            region = NobilityRegions.getRegionManager().getRegionByName(regionName);
+
+            if (region == null) {
+                sender.sendMessage(ChatColor.BLUE + regionName + ChatColor.YELLOW + " is not a valid region!");
+                return true;
+            }
+        }
+
+
+        Node node = null;
+        for (Node n : region.getNodes()) {
+            if (n.getName().equals(nodeName)) {
+                node = n;
+                break;
+            }
+        }
+
+        if (node == null) {
+            sender.sendMessage(ChatColor.RED + "There is no node " + ChatColor.GREEN + nodeName + ChatColor.RED 
+                + " in " + ChatColor.BLUE + region.getName());
+        } else {
+            node.setSlots(slots);
+            sender.sendMessage(ChatColor.YELLOW + "Slots in " + ChatColor.GREEN + node.getName() + ChatColor.YELLOW
+                + " set to " + ChatColor.GREEN + "" + slots);
+        }
+
+        return true;
+    }
+
+    private boolean removeNode(CommandSender sender, String[] args, Player player) {
+        if (args.length < 4 || !args[2].equals("-n")) {
+            sender.sendMessage(ChatColor.RED + "Usage: /nr remove node -n <node> (-r <region>)");
+            return true;
+        }
+
+        String nodeName = args[3];
+        int index = -1;
+        for (int i = 4; i < args.length; i++) {
+            if (args[i].equals("-r")) {
+                index = i;
+                break;
+            }
+
+            nodeName += " " + args[i];
+        }
+
+        Region region;
+        
+        if (index == -1) {
+            if (player == null) {
+                sender.sendMessage(ChatColor.RED + "You must specify the region from the console!");
+                return true;
+            }
+
+            region = NobilityRegions.getRegionManager().getRegionByLocation(player.getLocation());
+
+            if (region == null) {
+                sender.sendMessage(ChatColor.RED + "You are not in a region!");
+                return true;
+            }
+        } else {
+            if (index + 1 >= args.length) {
+                sender.sendMessage(ChatColor.RED + "Usage: /nr remove node -n <node> (-r <region>)");
+                return true;
+            }
+
+            String regionName = args[index + 1];
+            for (int i = index + 2; i < args.length; i++) {
+                regionName += " " + args[i];
+            }
+
+            region = NobilityRegions.getRegionManager().getRegionByName(regionName);
+
+            if (region == null) {
+                sender.sendMessage(ChatColor.BLUE + regionName + ChatColor.YELLOW + " is not a valid region!");
+                return true;
+            }
+        }
+
+        if (!region.removeNode(nodeName)) {
+            sender.sendMessage(ChatColor.GREEN + nodeName + ChatColor.RED + " is not a valid node in " 
+                + ChatColor.BLUE + region.getName() + ChatColor.RED + "!");
+        } else {
+            sender.sendMessage(ChatColor.GREEN + nodeName + ChatColor.YELLOW + " removed from " 
+                + ChatColor.BLUE + region.getName() + ChatColor.YELLOW + "!");
+        }
+
+        return true;
     }
 
     private boolean removeUsage(CommandSender sender) {

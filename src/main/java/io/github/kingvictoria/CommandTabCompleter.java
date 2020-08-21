@@ -59,6 +59,8 @@ public class CommandTabCompleter implements TabCompleter {
             } else {
                 StringUtil.copyPartialMatches(args[0], COMMANDS, tabs);
             }
+
+            return tabs;
         } else if (args.length == 2) {
             if (args[0].equals("info")) {
                 List<String> regionNames = new ArrayList<>();
@@ -79,33 +81,45 @@ public class CommandTabCompleter implements TabCompleter {
             } else if ((args[0].equals("add") || args[0].equals("remove")) && sender.isOp()) {
                 StringUtil.copyPartialMatches(args[1], ADD_COMMANDS, tabs);
             }
+
+            return tabs;
         } else if (args.length == 3) {
-            if (args[0].equals("set") && args[1].equals("habitability") && sender.isOp()) {
-                StringUtil.copyPartialMatches(args[2], BOOLEANS, tabs);
-            }
-        } else {
-            if (args[args.length - 2].equals("-r") || (args[1].equals("habitability") && args.length == 4)) {
-                List<String> regionNames = new ArrayList<>();
-                for (Region region : NobilityRegions.getRegionManager().getRegions()) {
-                    regionNames.add(region.getName());
-                }
-    
-                StringUtil.copyPartialMatches(args[args.length - 1], regionNames, tabs);
-            } else if (args[args.length - 2].equals("-t")) {
-                List<String> nodeTypeStrings = new ArrayList<>();
-                for (NodeType type : NodeType.values()) {
-                    nodeTypeStrings.add(type.name());
-                }
+            if (args[0].equals("set") && sender.isOp()) {
+                if (args[1].equals("habitability")) {
+                    StringUtil.copyPartialMatches(args[2], BOOLEANS, tabs);
+                    return tabs;
+                } else if (args[1].equals("type")) {
+                    List<String> nodeTypeStrings = new ArrayList<>();
+                    for (NodeType type : NodeType.values()) {
+                        nodeTypeStrings.add(type.name());
+                    }
 
-                StringUtil.copyPartialMatches(args[args.length - 1], nodeTypeStrings, tabs);
-            } else if (args[args.length - 2].equals("-o")) {
-                List<String> nobilityItemStrings = new ArrayList<>();
-                for (NobilityItem item : NobilityItems.getItems()) {
-                    nobilityItemStrings.add(item.getInternalName());
+                    StringUtil.copyPartialMatches(args[args.length - 1], nodeTypeStrings, tabs);
                 }
-
-                StringUtil.copyPartialMatches(args[args.length - 1], nobilityItemStrings, tabs);
             }
+        }
+
+        if (args[args.length - 2].equals("-r") || (args[1].equals("habitability") && args.length == 4)) {
+            List<String> regionNames = new ArrayList<>();
+            for (Region region : NobilityRegions.getRegionManager().getRegions()) {
+                regionNames.add(region.getName());
+            }
+
+            StringUtil.copyPartialMatches(args[args.length - 1], regionNames, tabs);
+        } else if (args[args.length - 2].equals("-t")) {
+            List<String> nodeTypeStrings = new ArrayList<>();
+            for (NodeType type : NodeType.values()) {
+                nodeTypeStrings.add(type.name());
+            }
+
+            StringUtil.copyPartialMatches(args[args.length - 1], nodeTypeStrings, tabs);
+        } else if (args[args.length - 2].equals("-o")) {
+            List<String> nobilityItemStrings = new ArrayList<>();
+            for (NobilityItem item : NobilityItems.getItems()) {
+                nobilityItemStrings.add(item.getInternalName());
+            }
+
+            StringUtil.copyPartialMatches(args[args.length - 1], nobilityItemStrings, tabs);
         }
         
         

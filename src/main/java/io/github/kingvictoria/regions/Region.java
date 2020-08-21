@@ -53,6 +53,24 @@ public class Region {
     }
 
     /**
+     * Removes a Node from this Region
+     * 
+     * @param name String name of the Node
+     * @return false if there is no Node with that name
+     */
+    public boolean removeNode(String name) {
+        for (int i = 0; i < nodes.size(); i++) {
+            if (nodes.get(i).getName().equals(name)) {
+                nodes.get(i).delete();
+                nodes.remove(i);
+                return true;
+            }
+        }
+
+         return false;
+    }
+
+    /**
      * Sets the name of a Region and updates the config to match
      * 
      * @param name String name

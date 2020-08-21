@@ -35,6 +35,13 @@ public class Node {
 	}
 
 	/**
+	 * Deletes this Node from the config, use {@link Region#removeNode(String)} to properly delete a node.
+	 */
+	public void delete() {
+		config.delete();
+	}
+
+	/**
 	 * Adds a worker to this node
 	 * 
 	 * @param player Player to add

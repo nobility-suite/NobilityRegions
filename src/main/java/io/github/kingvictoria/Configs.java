@@ -70,6 +70,19 @@ public class Configs {
                 regionConfig = region;
             }
 
+            @Override
+            public boolean equals(Object o) {
+                if (o instanceof ConfigNode && ((ConfigNode) o).config.getCurrentPath().equals(config.getCurrentPath())) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+
+            public void delete() {
+                regionConfig.deleteNode(this);
+            }
+
             /**
              * Saves the changes to the config
              */
@@ -216,6 +229,13 @@ public class Configs {
             config = regionsConfig.getConfigurationSection(world.getName() + "." + biome.name());
             this.world = world;
             this.biome = biome;
+        }
+
+        private void deleteNode(ConfigNode configNode) {
+            String path = "nodes" + configNode.config.getCurrentPath().substring(configNode.config.getCurrentPath().lastIndexOf("."));
+            nodeConfigs.remove(configNode);
+            changes.put(path, null);
+            save();
         }
 
         /**
