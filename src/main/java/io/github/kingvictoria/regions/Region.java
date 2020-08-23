@@ -1,5 +1,6 @@
 package io.github.kingvictoria.regions;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -98,24 +99,49 @@ public class Region {
         config.setHabitable(value).save();
     }
 
+    /**
+     * Gets the name of this Region (displayed to players)
+     * 
+     * @return String name
+     */
     public String getName() {
-        return name;
+        return new String(name);
     }
 
+    /**
+     * Gets the World this Region is associated with
+     * 
+     * @return World
+     */
     public World getWorld() {
         return world;
     }
 
+    /**
+     * Gets the Biome this Region is associated with
+     * 
+     * @return Biome
+     */
     public Biome getBiome() {
         return biome;
     }
 
+    /**
+     * Whether this Region is habitable (will display 'You Have Entered/Left the Wilderness', etc.)
+     * 
+     * @return boolean
+     */
     public boolean isHabitable() {
         return habitable;
     }
 
+    /**
+     * Gets a copy of the list of Nodes in this Region
+     * 
+     * @return List of Nodes
+     */
     public List<Node> getNodes() {
-        return nodes;
+        return new ArrayList<>(nodes);
     }
 
     @Override

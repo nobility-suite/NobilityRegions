@@ -45,7 +45,7 @@ public class NobilityRegions extends JavaPlugin {
     /**
      * Access the NobilityRegions Instance
      * 
-     * @return
+     * @return NobilityRegions
      */
     public static NobilityRegions getInstance() {
         return instance;

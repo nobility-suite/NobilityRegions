@@ -1,9 +1,11 @@
 package io.github.kingvictoria;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -95,6 +97,75 @@ public class CommandTabCompleter implements TabCompleter {
                     }
 
                     StringUtil.copyPartialMatches(args[args.length - 1], nodeTypeStrings, tabs);
+                    return tabs;
+                }
+            } else if ((args[0].equals("add") || args[0].equals("remove")) && sender.isOp()) {
+                if (args[1].equals("output")) {
+                    List<String> nobilityItemStrings = new ArrayList<>();
+                    for (NobilityItem item : NobilityItems.getItems()) {
+                        nobilityItemStrings.add(item.getInternalName());
+                    }
+
+                    StringUtil.copyPartialMatches(args[args.length - 1], nobilityItemStrings, tabs);
+                } else if (args[1].equals("worker")) {
+                    List<String> names = new ArrayList<>();
+                    for (OfflinePlayer player : Bukkit.getOfflinePlayers()) {
+                        names.add(player.getName());
+                    }
+
+                    StringUtil.copyPartialMatches(args[args.length - 1], names, tabs);
+                    return tabs;
+                }
+            }
+        } else if (args.length > 3) {
+            if (args[0].equals("add") && sender.isOp()) {
+                List<String> argsList = Arrays.asList(args);
+                if (!argsList.contains("-n") && !argsList.contains("-r")) {
+                    if (args[1].equals("output")) {
+                        try {
+                            Integer.parseInt(args[args.length - 1]);
+                            List<String> nobilityItemStrings = new ArrayList<>();
+                            for (NobilityItem item : NobilityItems.getItems()) {
+                                nobilityItemStrings.add(item.getInternalName());
+                            }
+    
+                            StringUtil.copyPartialMatches(args[args.length - 1], nobilityItemStrings, tabs);
+
+                            return tabs;
+                        } catch (NumberFormatException e) {
+                            // DO NOTHING (INTENDED)
+                        }
+                    } else if (args[1].equals("worker")) {
+                        List<String> names = new ArrayList<>();
+                        for (OfflinePlayer player : Bukkit.getOfflinePlayers()) {
+                            names.add(player.getName());
+                        }
+    
+                        StringUtil.copyPartialMatches(args[args.length - 1], names, tabs);
+                        return tabs;
+                    }
+                }
+            } else if (args[0].equals("remove") && sender.isOp()) {
+                List<String> argsList = Arrays.asList(args);
+                if (!argsList.contains("-n") && !argsList.contains("-r")) {
+                    if (args[1].equals("output")) {
+                        List<String> nobilityItemStrings = new ArrayList<>();
+                        for (NobilityItem item : NobilityItems.getItems()) {
+                            nobilityItemStrings.add(item.getInternalName());
+                        }
+
+                        StringUtil.copyPartialMatches(args[args.length - 1], nobilityItemStrings, tabs);
+
+                        return tabs;
+                    } else if (args[1].equals("worker")) {
+                        List<String> names = new ArrayList<>();
+                        for (OfflinePlayer player : Bukkit.getOfflinePlayers()) {
+                            names.add(player.getName());
+                        }
+    
+                        StringUtil.copyPartialMatches(args[args.length - 1], names, tabs);
+                        return tabs;
+                    }
                 }
             }
         }

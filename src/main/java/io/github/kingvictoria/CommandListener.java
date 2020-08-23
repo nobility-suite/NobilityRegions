@@ -1,11 +1,14 @@
 package io.github.kingvictoria;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -43,6 +46,11 @@ public class CommandListener implements CommandExecutor {
         } else if (args[0].equals("info")) {
             return info(sender, args, player);
         } else if (args[0].equals("generate")) {
+            if (!sender.isOp()) {
+                sender.sendMessage(ChatColor.RED + "Usage of this command is restricted");
+                return true;
+            }
+
             return generate(sender, args, player);
         } else if (args[0].equals("set")) {
             if (!sender.isOp()) {
@@ -72,13 +80,9 @@ public class CommandListener implements CommandExecutor {
             if (args.length == 1) {
                 return addUsage(sender);
             } else if (args[1].equals("output")) {
-                // TODO: Impliment /nr add output [<output item> <amount>...] -n <node> (-r <region>)
-                sender.sendMessage(ChatColor.YELLOW + "This command is not yet implimented!");
-                return true;
+                return addOutput(sender, args, player);
             } else if (args[1].equals("worker")) {
-                // TODO: Impliment /nr add worker [<player>...] -n <node> (-r <region>)
-                sender.sendMessage(ChatColor.YELLOW + "This command is not yet implimented!");
-                return true;
+                return addWorker(sender, args, player);
             } else if (args[1].equals("node")) {
                 return addNode(sender, args, player);
             }
@@ -93,13 +97,9 @@ public class CommandListener implements CommandExecutor {
             if (args.length == 1) {
                 return removeUsage(sender);
             } else if (args[1].equals("output")) {
-                // TODO: Impliment /nr remove output [<output item>...] -n <node> (-r <region>)
-                sender.sendMessage(ChatColor.YELLOW + "This command is not yet implimented!");
-                return true;
+                return removeOutput(sender, args, player);
             } else if (args[1].equals("worker")) {
-                // TODO: Impliment /nr remove worker [<player>...] -n <node> (-r <region>)
-                sender.sendMessage(ChatColor.YELLOW + "This command is not yet implimented!");
-                return true;
+                return removeWorker(sender, args, player);
             } else if (args[1].equals("node")) {
                 return removeNode(sender, args, player);
             }
@@ -108,6 +108,454 @@ public class CommandListener implements CommandExecutor {
         }
 
         return false;
+    }
+
+    private boolean removeOutput(CommandSender sender, String[] args, Player player) {
+        if (args.length < 5) {
+            sender.sendMessage(ChatColor.RED + "Usage: /nr remove output [<output item>...] -n <node> (-r <region>)");
+            return true;
+        }
+
+        int index = 2;
+        List<NobilityItem> toRemove = new ArrayList<>();
+
+        while (index < args.length && !args[index].equals("-n")) {
+            NobilityItem item = null;
+            try {
+                item = NobilityItems.getItemByName(args[index]);
+            } catch (IllegalArgumentException e) {
+                sender.sendMessage(ChatColor.RED + args[index] + " is not a valid NobilityItem!");
+                return true;
+            }
+
+            toRemove.add(item);
+            index++;
+        }
+
+        if (index >= args.length) {
+            sender.sendMessage(ChatColor.RED + "Usage: /nr remove output [<output item>...] -n <node> (-r <region>)");
+            return true;
+        }
+
+        int oldIndex = index;
+        String nodeName = args[index + 1];
+        for (int i = index + 2; i < args.length; i++) {
+            if (args[i].equals("-r")) {
+                index = i;
+                break;
+            }
+
+            nodeName += " " + args[i];
+        }
+
+        Region region;
+        if (index == oldIndex) {
+            if (player == null) {
+                sender.sendMessage(ChatColor.RED + "You must specify the region from the console!");
+                return true;
+            }
+
+            region = NobilityRegions.getRegionManager().getRegionByLocation(player.getLocation());
+
+            if (region == null) {
+                sender.sendMessage(ChatColor.RED + "You are not in a region!");
+                return true;
+            }
+        } else {
+            if (index + 1 >= args.length) {
+                sender.sendMessage(ChatColor.RED + "Usage: /nr remove output [<output item>...] -n <node> (-r <region>)");
+                return true;
+            }
+
+            String regionName = args[index + 1];
+            for (int i = index + 2; i < args.length; i++) {
+                regionName += " " + args[i];
+            }
+
+            region = NobilityRegions.getRegionManager().getRegionByName(regionName);
+
+            if (region == null) {
+                sender.sendMessage(ChatColor.BLUE + regionName + ChatColor.RED + " is not a valid region!");
+                return true;
+            }
+        }
+
+
+        Node node = null;
+        for (Node n : region.getNodes()) {
+            if (n.getName().equals(nodeName)) {
+                node = n;
+                break;
+            }
+        }
+
+        if (node == null) {
+            sender.sendMessage(ChatColor.RED + "There is no node " + ChatColor.GREEN + nodeName + ChatColor.RED 
+                + " in " + ChatColor.BLUE + region.getName());
+        } else {
+            List<NobilityItem> didNotRemove = new ArrayList<>();
+            Map<NobilityItem, Integer> output = node.getOutput();
+            for (NobilityItem item: toRemove) {
+                Integer value = output.remove(item);
+                if (value == null) {
+                    didNotRemove.add(item);
+                } else {
+                    output.put(item, null);
+                }
+            }
+            if (!didNotRemove.isEmpty()) {
+                String out = ChatColor.RED + "Unable to remove ";
+                for (NobilityItem item : didNotRemove) {
+                    toRemove.remove(item);
+                    out += ChatColor.BLUE + item.getInternalName() + ChatColor.RED + ", ";
+                }
+                out = out.substring(0, out.length() - 2);
+                out += "!";
+                sender.sendMessage(out);
+            }
+ 
+            node.setOutput(output);
+
+            String out = ChatColor.YELLOW + "Removed ";
+            for (NobilityItem item : toRemove) {
+                out += ChatColor.BLUE + item.getInternalName() + ChatColor.YELLOW + ", ";
+            }
+            out = out.substring(0, out.length() - 2);
+            out += "!";
+
+            if (out.length() > 9) {
+                sender.sendMessage(out);
+            }
+        }
+
+        return true;
+    }
+
+    private boolean removeWorker(CommandSender sender, String[] args, Player player) {
+        if (args.length < 5) {
+            sender.sendMessage(ChatColor.RED + "Usage: /nr remove worker [<player>...] -n <node> (-r <region>)");
+            return true;
+        }
+
+        List<OfflinePlayer> workersToRemove = new ArrayList<>();
+        int index = 2;
+        get_workers_loop:
+        while (index < args.length && !args[index].equals("-n")) {
+            for (OfflinePlayer offlinePlayer : Bukkit.getOfflinePlayers()) {
+                if (offlinePlayer.getName().equals(args[index])) {
+                    workersToRemove.add(offlinePlayer);
+                    index++;
+                    continue get_workers_loop;
+                }
+            }
+
+            sender.sendMessage(ChatColor.GREEN + args[index] + ChatColor.RED + " is not a player!");
+            return true;
+        }
+
+        if (index >= args.length) {
+            sender.sendMessage(ChatColor.RED + "Usage: /nr remove worker [<player>...] -n <node> (-r <region>)");
+            return true;
+        }
+
+        int oldIndex = index;
+        String nodeName = args[index + 1];
+        for (int i = index + 2; i < args.length; i++) {
+            if (args[i].equals("-r")) {
+                index = i;
+                break;
+            }
+
+            nodeName += " " + args[i];
+        }
+
+        Region region;
+        if (index == oldIndex) {
+            if (player == null) {
+                sender.sendMessage(ChatColor.RED + "You must specify the region from the console!");
+                return true;
+            }
+
+            region = NobilityRegions.getRegionManager().getRegionByLocation(player.getLocation());
+
+            if (region == null) {
+                sender.sendMessage(ChatColor.RED + "You are not in a region!");
+                return true;
+            }
+        } else {
+            if (index + 1 >= args.length) {
+                sender.sendMessage(ChatColor.RED + "Usage: /nr remove worker [<player>...] -n <node> (-r <region>)");
+                return true;
+            }
+
+            String regionName = args[index + 1];
+            for (int i = index + 2; i < args.length; i++) {
+                regionName += " " + args[i];
+            }
+
+            region = NobilityRegions.getRegionManager().getRegionByName(regionName);
+
+            if (region == null) {
+                sender.sendMessage(ChatColor.BLUE + regionName + ChatColor.RED + " is not a valid region!");
+                return true;
+            }
+        }
+
+
+        Node node = null;
+        for (Node n : region.getNodes()) {
+            if (n.getName().equals(nodeName)) {
+                node = n;
+                break;
+            }
+        }
+
+        if (node == null) {
+            sender.sendMessage(ChatColor.RED + "There is no node " + ChatColor.GREEN + nodeName + ChatColor.RED 
+                + " in " + ChatColor.BLUE + region.getName());
+        } else {
+            List<OfflinePlayer> workersUnableToRemove = new ArrayList<>();
+            for (OfflinePlayer worker : workersToRemove) {
+                if(!node.removeWorker(worker)) {
+                    workersUnableToRemove.add(worker);
+                }
+            }
+
+            if (!workersUnableToRemove.isEmpty()) {
+                String out = ChatColor.RED + "Unable to remove ";
+                for (OfflinePlayer worker : workersUnableToRemove) {
+                    workersToRemove.remove(worker);
+                    out += ChatColor.BLUE + worker.getName() + ChatColor.RED + ", ";
+                }
+                out = out.substring(0, out.length() - 2) + "! Are they workers on this node?";
+                sender.sendMessage(out);
+            }
+
+            String out = ChatColor.YELLOW + "Removed ";
+            for (OfflinePlayer worker : workersToRemove) {
+                out += ChatColor.BLUE + worker.getName() + ChatColor.YELLOW + ", ";
+            }
+            out = out.substring(0, out.length() - 2) + "!";
+            if (out.length() > 8) {
+                sender.sendMessage(out);
+            }
+        }
+
+
+        return true;
+    }
+
+    private boolean addWorker(CommandSender sender, String[] args, Player player) {
+        if (args.length < 5) {
+            sender.sendMessage(ChatColor.RED + "Usage: /nr add worker [<player>...] -n <node> (-r <region>)");
+            return true;
+        }
+
+        List<OfflinePlayer> workersToAdd = new ArrayList<>();
+        int index = 2;
+        get_workers_loop:
+        while (index < args.length && !args[index].equals("-n")) {
+            for (OfflinePlayer offlinePlayer : Bukkit.getOfflinePlayers()) {
+                if (offlinePlayer.getName().equals(args[index])) {
+                    workersToAdd.add(offlinePlayer);
+                    index++;
+                    continue get_workers_loop;
+                }
+            }
+
+            sender.sendMessage(ChatColor.GREEN + args[index] + ChatColor.RED + " is not a player!");
+            return true;
+        }
+
+        if (index >= args.length) {
+            sender.sendMessage(ChatColor.RED + "Usage: /nr add worker [<player>...] -n <node> (-r <region>)");
+            return true;
+        }
+
+        int oldIndex = index;
+        String nodeName = args[index + 1];
+        for (int i = index + 2; i < args.length; i++) {
+            if (args[i].equals("-r")) {
+                index = i;
+                break;
+            }
+
+            nodeName += " " + args[i];
+        }
+
+        Region region;
+        if (index == oldIndex) {
+            if (player == null) {
+                sender.sendMessage(ChatColor.RED + "You must specify the region from the console!");
+                return true;
+            }
+
+            region = NobilityRegions.getRegionManager().getRegionByLocation(player.getLocation());
+
+            if (region == null) {
+                sender.sendMessage(ChatColor.RED + "You are not in a region!");
+                return true;
+            }
+        } else {
+            if (index + 1 >= args.length) {
+                sender.sendMessage(ChatColor.RED + "Usage: /nr add worker [<player>...] -n <node> (-r <region>)");
+                return true;
+            }
+
+            String regionName = args[index + 1];
+            for (int i = index + 2; i < args.length; i++) {
+                regionName += " " + args[i];
+            }
+
+            region = NobilityRegions.getRegionManager().getRegionByName(regionName);
+
+            if (region == null) {
+                sender.sendMessage(ChatColor.BLUE + regionName + ChatColor.RED + " is not a valid region!");
+                return true;
+            }
+        }
+
+
+        Node node = null;
+        for (Node n : region.getNodes()) {
+            if (n.getName().equals(nodeName)) {
+                node = n;
+                break;
+            }
+        }
+
+        if (node == null) {
+            sender.sendMessage(ChatColor.RED + "There is no node " + ChatColor.GREEN + nodeName + ChatColor.RED 
+                + " in " + ChatColor.BLUE + region.getName());
+        } else {
+            List<OfflinePlayer> workersUnableToAdd = new ArrayList<>();
+            for (OfflinePlayer worker : workersToAdd) {
+                if(!node.addWorker(worker)) {
+                    workersUnableToAdd.add(worker);
+                }
+            }
+
+            if (!workersUnableToAdd.isEmpty()) {
+                String out = ChatColor.RED + "Unable to add ";
+                for (OfflinePlayer worker : workersUnableToAdd) {
+                    workersToAdd.remove(worker);
+                    out += ChatColor.BLUE + worker.getName() + ChatColor.RED + ", ";
+                }
+                out = out.substring(0, out.length() - 2) + "!";
+                sender.sendMessage(out);
+            }
+
+            String out = ChatColor.YELLOW + "Added ";
+            for (OfflinePlayer worker : workersToAdd) {
+                out += ChatColor.BLUE + worker.getName() + ChatColor.YELLOW + ", ";
+            }
+            out = out.substring(0, out.length() - 2) + "!";
+            if (out.length() > 7) {
+                sender.sendMessage(out);
+            }
+        }
+
+
+        return true;
+    }
+
+    private boolean addOutput(CommandSender sender, String[] args, Player player) {
+        if (args.length < 6) {
+            sender.sendMessage(ChatColor.RED + "Usage: /nr add output [<output item> <amount>...] -n <node> (-r <region>)");
+            return true;
+        }
+
+        int index = 2;
+        Map<NobilityItem, Integer> output = new HashMap<>();
+
+        while (index + 1 < args.length && !args[index].equals("-n")) {
+            NobilityItem item = null;
+            int amount = -1;
+            try {
+                item = NobilityItems.getItemByName(args[index]);
+            } catch (IllegalArgumentException e) {
+                sender.sendMessage(ChatColor.RED + args[index] + " is not a valid NobilityItem!");
+                return true;
+            }
+
+            try {
+                amount = Integer.valueOf(args[index + 1]);
+            } catch (NumberFormatException e) {
+                sender.sendMessage(ChatColor.RED + args[index + 1] + " is not a number!");
+                return true;
+            }
+
+            output.put(item, amount);
+            index += 2;
+        }
+
+        if (index >= args.length) {
+            sender.sendMessage(ChatColor.RED + "Usage: /nr add output [<output item> <amount>...] -n <node> (-r <region>)");
+            return true;
+        }
+
+        int oldIndex = index;
+        String nodeName = args[index + 1];
+        for (int i = index + 2; i < args.length; i++) {
+            if (args[i].equals("-r")) {
+                index = i;
+                break;
+            }
+
+            nodeName += " " + args[i];
+        }
+
+        Region region;
+        if (index == oldIndex) {
+            if (player == null) {
+                sender.sendMessage(ChatColor.RED + "You must specify the region from the console!");
+                return true;
+            }
+
+            region = NobilityRegions.getRegionManager().getRegionByLocation(player.getLocation());
+
+            if (region == null) {
+                sender.sendMessage(ChatColor.RED + "You are not in a region!");
+                return true;
+            }
+        } else {
+            if (index + 1 >= args.length) {
+                sender.sendMessage(ChatColor.RED + "Usage: /nr set slots <number> -n <node> (-r <region>)");
+                return true;
+            }
+
+            String regionName = args[index + 1];
+            for (int i = index + 2; i < args.length; i++) {
+                regionName += " " + args[i];
+            }
+
+            region = NobilityRegions.getRegionManager().getRegionByName(regionName);
+
+            if (region == null) {
+                sender.sendMessage(ChatColor.BLUE + regionName + ChatColor.RED + " is not a valid region!");
+                return true;
+            }
+        }
+
+
+        Node node = null;
+        for (Node n : region.getNodes()) {
+            if (n.getName().equals(nodeName)) {
+                node = n;
+                break;
+            }
+        }
+
+        if (node == null) {
+            sender.sendMessage(ChatColor.RED + "There is no node " + ChatColor.GREEN + nodeName + ChatColor.RED 
+                + " in " + ChatColor.BLUE + region.getName());
+        } else {
+            node.getOutput().forEach(output::putIfAbsent);
+            node.setOutput(output);
+            sender.sendMessage(ChatColor.YELLOW + "Outputs added to " + ChatColor.GREEN + node.getName() + ChatColor.YELLOW + "!");
+        }
+
+        return true;
     }
 
     private boolean setType(CommandSender sender, String[] args, Player player) {
@@ -663,40 +1111,20 @@ public class CommandListener implements CommandExecutor {
         sender.sendMessage(ChatColor.YELLOW + "Gets info on a region, defaults to the region you're in");
 
         if (sender.isOp()) {
-            sender.sendMessage(ChatColor.GREEN + "--- " + ChatColor.DARK_GREEN + "Admin Commands" + ChatColor.GREEN + " ---");
+            sender.sendMessage(ChatColor.GREEN + "--- " + ChatColor.DARK_GREEN + ""
+                + ChatColor.BOLD + "Admin Commands" + ChatColor.GREEN + " ---");
 
-            sender.sendMessage(ChatColor.DARK_GREEN + "/nr generate (world name)"); 
-            sender.sendMessage(ChatColor.GOLD + "Generates regions for a world, defaults to the world you're in");
+            sender.sendMessage(ChatColor.GREEN + "/nr generate (world name)"); 
+            sender.sendMessage(ChatColor.YELLOW + "Generates regions for a world, defaults to the world you're in");
 
-            sender.sendMessage(ChatColor.DARK_GREEN + "/nr set name (-r <region name> -n) <new name>");
-            sender.sendMessage(ChatColor.GOLD + "Sets the name of a region, defaults to the region you're in");
+            sender.sendMessage(ChatColor.GREEN + "/nr set <name | habitability | slots | type> <args..>"); 
+            sender.sendMessage(ChatColor.YELLOW + "Sets region/node data");
 
-            sender.sendMessage(ChatColor.DARK_GREEN + "/nr set habitability <true|false> (region name)");
-            sender.sendMessage(ChatColor.GOLD + "Sets the habitability of a region, defaults to the region you're in");
+            sender.sendMessage(ChatColor.GREEN + "/nr add <output | worker | node> <args..>"); 
+            sender.sendMessage(ChatColor.YELLOW + "Adds region/node data");
 
-            sender.sendMessage(ChatColor.DARK_GREEN + "/nr set slots <number> -n <node> (-r <region>)");
-            sender.sendMessage(ChatColor.GOLD + "Sets the number of slots in a node, defaults to the region you're in");
-
-            sender.sendMessage(ChatColor.DARK_GREEN + "/nr set type <NodeType> -n <node> (-r <region>)");
-            sender.sendMessage(ChatColor.GOLD + "Sets the NodeType of a node, defaults to the region you're in");
-
-            sender.sendMessage(ChatColor.DARK_GREEN + "/nr add output [<output item> <amount>...] -n <node> (-r <region>)");
-            sender.sendMessage(ChatColor.GOLD + "Adds outputs to a node, defaults to the region you're in");
-
-            sender.sendMessage(ChatColor.DARK_GREEN + "/nr add worker [<player>...] -n <node> (-r <region>)");
-            sender.sendMessage(ChatColor.GOLD + "Adds workers to a node, defaults to the region you're in");
-
-            sender.sendMessage(ChatColor.DARK_GREEN + "/nr add node -i <id> -n <name> -s <slots> -t <type> [-o <output item> <amount>...] (-r <region>)");
-            sender.sendMessage(ChatColor.GOLD + "Adds a node to a region, defaults to the region you're in");
-
-            sender.sendMessage(ChatColor.DARK_GREEN + "/nr remove output [<output item>...] -n <node> (-r <region>)");
-            sender.sendMessage(ChatColor.GOLD + "Removes outputs from a node, defaults to the region you're in");
-
-            sender.sendMessage(ChatColor.DARK_GREEN + "/nr remove worker [<player>...] -n <node> (-r <region>)");
-            sender.sendMessage(ChatColor.GOLD + "Removes workers from a node, defaults to the region you're in");
-
-            sender.sendMessage(ChatColor.DARK_GREEN + "/nr remove node -n <node> (-r <region>)");
-            sender.sendMessage(ChatColor.GOLD + "Removes a node from a region, defaults to the region you're in");
+            sender.sendMessage(ChatColor.GREEN + "/nr remove <output | worker | node> <args..>"); 
+            sender.sendMessage(ChatColor.YELLOW + "Removes region/node data");
         }
 
         return true;
@@ -823,11 +1251,6 @@ public class CommandListener implements CommandExecutor {
     }
 
     private static boolean generate(CommandSender sender, String[] args, Player player) {
-        if (!sender.isOp()) {
-            sender.sendMessage(ChatColor.RED + "Usage of this command is restricted");
-            return true;
-        }
-
         if (args.length == 1 && player == null) {
             sender.sendMessage(ChatColor.RED + "You must specify the world to use this command from the console");
             return true;
